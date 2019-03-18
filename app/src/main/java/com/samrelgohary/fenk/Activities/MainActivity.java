@@ -1,4 +1,4 @@
-package com.example.findfreinds.Activities;
+package com.samrelgohary.fenk.Activities;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,11 +8,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.example.findfreinds.Fragments.ChatFragment;
-import com.example.findfreinds.Fragments.FriendsFragment;
-import com.example.findfreinds.Fragments.HomeFragment;
-import com.example.findfreinds.Fragments.MoreFragment;
-import com.example.findfreinds.R;
+import com.samrelgohary.fenk.Fragments.ChatFragment;
+import com.samrelgohary.fenk.Fragments.FriendsFragment;
+import com.samrelgohary.fenk.Fragments.HomeFragment;
+import com.samrelgohary.fenk.Fragments.MoreFragment;
+import com.samrelgohary.fenk.R;
+
+/**
+ created by sam R. El Gohary Mar 12, 2019
+ */
 
 public class MainActivity extends AppCompatActivity {
 

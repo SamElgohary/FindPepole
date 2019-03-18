@@ -1,4 +1,4 @@
-package com.example.findfreinds;
+package com.samrelgohary.fenk;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package com.example.findfreinds;
+package com.samrelgohary.fenk;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

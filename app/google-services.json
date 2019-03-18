@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "997254126683",
+    "firebase_url": "https://fenk-b7a98.firebaseio.com",
+    "project_id": "fenk-b7a98",
+    "storage_bucket": "fenk-b7a98.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:997254126683:android:99c252e0b424e4c8",
+        "android_client_info": {
+          "package_name": "com.samrelgohary.fenk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "997254126683-5bg38lts9vifqgnoptdrc0esqt7luk6b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.samrelgohary.fenk",
+            "certificate_hash": "e482ddd493516b86a2408daebc88d7c0bc3eae98"
+          }
+        },
+        {
+          "client_id": "997254126683-hb7sgat1nq1j6ajobh4ganv9kcir5et9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBECzIpsDvt8SH5Xb-EFvI6zUmCkSheTzU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "997254126683-hb7sgat1nq1j6ajobh4ganv9kcir5et9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
