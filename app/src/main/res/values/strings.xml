@@ -30,4 +30,8 @@
     <string name="register">Register</string>
     <string name="about">About</string>
     <string name="logout">Logout</string>
+
+
+    <string name="facebook_app_id">2005122686266704</string>
+    <string name="fb_login_protocol_scheme">fb2005122686266704</string>
 </resources>

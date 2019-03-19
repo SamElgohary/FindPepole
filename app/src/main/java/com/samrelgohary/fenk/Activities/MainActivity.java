@@ -1,18 +1,31 @@
 package com.samrelgohary.fenk.Activities;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.samrelgohary.fenk.Fragments.ChatFragment;
 import com.samrelgohary.fenk.Fragments.FriendsFragment;
 import com.samrelgohary.fenk.Fragments.HomeFragment;
 import com.samrelgohary.fenk.Fragments.MoreFragment;
 import com.samrelgohary.fenk.R;
+import com.squareup.picasso.Picasso;
+
+import java.util.Map;
 
 /**
  created by sam R. El Gohary Mar 12, 2019
@@ -21,6 +34,15 @@ import com.samrelgohary.fenk.R;
 public class MainActivity extends AppCompatActivity {
 
     private TextView mTopBarTV;
+
+    private FirebaseAuth mAuth;
+    private DatabaseReference mUserDatabase;
+
+    private String userID;
+    private String mProfileImageUrl;
+    ImageView mUserImgProfile;
+
+
     Fragment fragment = new HomeFragment();
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -57,11 +79,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mUserImgProfile = findViewById(R.id.user_img_profile);
+
+        mAuth = FirebaseAuth.getInstance();
+        userID = mAuth.getCurrentUser().getUid();
+        mUserDatabase = FirebaseDatabase.getInstance().getReference().child("user").child(userID);
+
         mTopBarTV = (TextView) findViewById(R.id.top_bar_tv);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         loadFragment(fragment);
+         getUserData();
     }
 
     private boolean loadFragment(Fragment fragment) {
@@ -74,6 +103,45 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    public void getUserData(){
+
+        mUserDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists() && dataSnapshot.getChildrenCount()>0){
+                    Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+
+                    if(map.get("img")!=null){
+                        mProfileImageUrl = map.get("img").toString();
+                        setDefaults("userImg",map.get("img").toString(),MainActivity.this);
+                        Picasso.get().load(mProfileImageUrl).into(mUserImgProfile);
+                    }
+                    setDefaults("fName",map.get("fName").toString(),MainActivity.this);
+                    setDefaults("lName",map.get("lName").toString(),MainActivity.this);
+                    setDefaults("email",map.get("email").toString(),MainActivity.this);
+                    setDefaults("dateOfBirth",map.get("dateOfBirth").toString(),MainActivity.this);
+                    setDefaults("gender",map.get("gender").toString(),MainActivity.this);
+                    setDefaults("phone",map.get("phone").toString(),MainActivity.this);
+                    setDefaults("lat",map.get("lat").toString(),MainActivity.this);
+                    setDefaults("lng",map.get("lng").toString(),MainActivity.this);
+                    setDefaults("socialId",map.get("socialId").toString(),MainActivity.this);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
+
+    public static void setDefaults(String key, String value, Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(key, value);
+        editor.commit();
     }
 
 }

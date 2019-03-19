@@ -97,20 +97,23 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginBottom="@dimen/_16sdp"
+                    android:layout_marginRight="@dimen/_32sdp"
+                    android:layout_marginLeft="@dimen/_32sdp"
+                    android:orientation="vertical">
 
-                    <ImageView
-                        android:layout_width="@dimen/_40sdp"
-                        android:layout_height="@dimen/_40sdp"
-                        android:layout_margin="@dimen/_4sdp"
-                        android:padding="@dimen/_8sdp"
-                       />
+                    <com.google.android.gms.common.SignInButton
+                        android:id="@+id/sign_in_button"
+                        android:layout_width="@dimen/_160sdp"
+                        android:layout_height="@dimen/_30sdp"/>
 
-                    <ImageView
-                        android:layout_width="@dimen/_40sdp"
-                        android:layout_height="@dimen/_40sdp"
-                        android:layout_margin="@dimen/_4sdp"
-                       />
+                    <com.facebook.login.widget.LoginButton
+                        android:id="@+id/login_button"
+                        android:layout_width="@dimen/_150sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_marginBottom="@dimen/_16sdp"
+                        android:layout_marginTop="@dimen/_8sdp"/>
 
                 </LinearLayout>
 
