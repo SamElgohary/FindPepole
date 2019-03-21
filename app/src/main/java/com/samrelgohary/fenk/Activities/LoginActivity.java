@@ -13,9 +13,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.auth.api.Auth;
@@ -34,7 +34,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.samrelgohary.fenk.R;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -62,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText mEmail, mPassword;
     Button mSignIn;
 
+    ImageView mFacebook, mGoogle;
 
     TextView mLinkToSginUp;
 
@@ -76,6 +76,23 @@ public class LoginActivity extends AppCompatActivity {
         mPassword  = findViewById(R.id.input_password);
         mSignIn    = findViewById(R.id.btn_login);
         mLinkToSginUp = findViewById(R.id.link_signup);
+
+        mFacebook     = findViewById(R.id.faceBook);
+        mGoogle       = findViewById(R.id.google);
+
+        mFacebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginButton.performClick();
+            }
+        });
+
+        mGoogle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signInWithGoogle();
+            }
+        });
 
         loginButton = (LoginButton) findViewById(R.id.login_button);
         callbackManager = CallbackManager.Factory.create();
@@ -116,13 +133,13 @@ public class LoginActivity extends AppCompatActivity {
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        signInButton = (SignInButton) findViewById(R.id.sign_in_button);
-        signInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                signInWithGoogle();
-            }
-        });
+//        signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+//        signInButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//            }
+//        });
 
 
         mLinkToSginUp.setOnClickListener(new View.OnClickListener() {
@@ -155,7 +172,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
                 } else {
