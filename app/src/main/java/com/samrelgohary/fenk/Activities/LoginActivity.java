@@ -33,6 +33,7 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.samrelgohary.fenk.MapsActivity;
 import com.samrelgohary.fenk.R;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -172,7 +173,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
                     startActivity(intent);
                     finish();
                 } else {
