@@ -16,6 +16,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
@@ -29,6 +31,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.samrelgohary.fenk.R;
 
 import static android.content.Context.LOCATION_SERVICE;
@@ -100,11 +105,18 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
         mLastLocation = location;
 
         LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
-        googleMap.addMarker(new MarkerOptions().position(latLng).title("Marker Title").snippet("Marker Description"));
+        //googleMap.addMarker(new MarkerOptions().position(latLng).title("Marker Title").snippet("Marker Description"));
 
         // For zooming automatically to the location of the marker
         CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(15).build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("realTimeLocation");
+
+        GeoFire geoFire = new GeoFire(ref);
+        geoFire.setLocation(userId,new GeoLocation(location.getLatitude(),location.getLongitude()));
     }
 
 
@@ -151,6 +163,17 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
     public void onDestroy() {
         super.onDestroy();
         mMapView.onDestroy();
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+
+//        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("realTimeLocation");
+//
+//        GeoFire geoFire = new GeoFire(ref);
+//        geoFire.removeLocation(userId);
     }
 
     @Override
