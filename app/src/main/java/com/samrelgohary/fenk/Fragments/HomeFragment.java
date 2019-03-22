@@ -2,6 +2,9 @@ package com.samrelgohary.fenk.Fragments;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -20,6 +23,8 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.samrelgohary.fenk.R;
+
+import static android.content.Context.LOCATION_SERVICE;
 
 /**
  created by samRElGohary Mar 12, 2019
@@ -62,16 +67,22 @@ public class HomeFragment extends Fragment {
                 }
                 googleMap.setMyLocationEnabled(true);
 
+                Criteria criteria = new Criteria();
+                LocationManager locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+                String provider = locationManager.getBestProvider(criteria, true);
+                Location location = locationManager.getLastKnownLocation(provider);
+                double latitude = location.getLatitude();
+                double longitude = location.getLongitude();
+
                 // For dropping a marker at a point on the Map
-                LatLng sydney = new LatLng(-34, 151);
+                LatLng sydney = new LatLng(latitude, longitude);
                 googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description"));
 
                 // For zooming automatically to the location of the marker
-                CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
+                CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(15).build();
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             }
         });
-
 
 
         return rootView;
