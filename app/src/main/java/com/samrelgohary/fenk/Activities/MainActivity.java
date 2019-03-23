@@ -1,14 +1,17 @@
 package com.samrelgohary.fenk.Activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,7 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.samrelgohary.fenk.Fragments.ChatFragment;
-import com.samrelgohary.fenk.Fragments.FriendsFragment;
+import com.samrelgohary.fenk.Fragments.CircleFragment;
 import com.samrelgohary.fenk.Fragments.HomeFragment;
 import com.samrelgohary.fenk.Fragments.MoreFragment;
 import com.samrelgohary.fenk.R;
@@ -38,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference mUserDatabase;
 
+
+    ConstraintLayout mConstraintLayout;
+
     private String userID;
     private String mProfileImageUrl;
     ImageView mUserImgProfile;
@@ -54,18 +60,21 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     fragment = new HomeFragment();
+                    mConstraintLayout.setVisibility(View.VISIBLE);
                     mTopBarTV.setText(getString(R.string.title_home));
                     break;
-                case R.id.navigation_friends:
-                    fragment = new FriendsFragment();
-                    mTopBarTV.setText(getString(R.string.title_friends));
+                case R.id.navigation_circle:
+                    fragment = new CircleFragment();
+                    mConstraintLayout.setVisibility(View.GONE);
                     break;
                 case R.id.navigation_chat:
                     fragment = new ChatFragment();
+                    mConstraintLayout.setVisibility(View.VISIBLE);
                     mTopBarTV.setText(getString(R.string.title_chat));
                     break;
                 case R.id.navigation_more:
                     fragment = new MoreFragment();
+                    mConstraintLayout.setVisibility(View.VISIBLE);
                     mTopBarTV.setText(getString(R.string.title_more));
                     break;
             }
@@ -79,7 +88,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mConstraintLayout = findViewById(R.id.constraintLayout);
+
         mUserImgProfile = findViewById(R.id.user_img_profile);
+        mUserImgProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(MainActivity.this,MyProfileActivity.class);
+                startActivity(intent);
+            }
+        });
 
         mAuth = FirebaseAuth.getInstance();
         userID = mAuth.getCurrentUser().getUid();

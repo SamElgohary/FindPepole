@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">فينك</string>
     <string name="title_home">Home</string>
-    <string name="title_friends">Friends</string>
+    <string name="title_circle">My circle</string>
     <string name="title_chat">Chat</string>
     <string name="title_more">More</string>
 
@@ -35,4 +35,5 @@
     <string name="facebook_app_id">2005122686266704</string>
     <string name="fb_login_protocol_scheme">fb2005122686266704</string>
     <string name="title_activity_maps">Map</string>
+    <string name="search_in_your_circle">Search in Your Circle</string>
 </resources>

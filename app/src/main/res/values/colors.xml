@@ -10,5 +10,7 @@
 
     <color name="grayDark">#6f6f6f</color>
 
+    <color name="black">#000000</color>
+
 
 </resources>
