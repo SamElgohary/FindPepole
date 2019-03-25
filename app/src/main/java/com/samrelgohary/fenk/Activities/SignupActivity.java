@@ -125,8 +125,10 @@ public class SignupActivity extends AppCompatActivity {
         userModel.setGender(String.valueOf(radioButton.getText()));
         userModel.setPhone(mPhoneNumber.getText().toString());
 
-        userModel.setLat(12121.3694545);
-        userModel.setLng(12.36996567);
+        String fullName = mFName.getText().toString() + " " + mLtName.getText().toString();
+        Log.d("fullName","__"+fullName);
+
+        userModel.setFullName(fullName);
 
         if(resultUri != null) {
 

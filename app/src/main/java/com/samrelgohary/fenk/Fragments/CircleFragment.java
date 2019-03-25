@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.samrelgohary.fenk.Activities.AddToCircleActivity;
 import com.samrelgohary.fenk.Activities.MainActivity;
 import com.samrelgohary.fenk.Activities.MyProfileActivity;
 import com.samrelgohary.fenk.Adapter.MyCircleAdapter;
@@ -41,7 +42,7 @@ public class CircleFragment extends Fragment {
     private MyCircleAdapter mCircleAdapter;
     private ArrayList<UserModel> mUserData;
 
-    ImageView mUserImgProfile;
+    ImageView mUserImgProfile, mAddPepole;
 
     @Nullable
     @Override
@@ -59,6 +60,16 @@ public class CircleFragment extends Fragment {
         });
 
         Picasso.get().load(getDefaults("userImg",getApplicationContext())).into(mUserImgProfile);
+
+        mAddPepole  = view.findViewById(R.id.add_people);
+        mAddPepole.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getActivity(), AddToCircleActivity.class);
+                startActivity(intent);
+            }
+        });
 
         mGVMyCircle = (GridView) view.findViewById(R.id.gv_my_circle);
         mUserData = new ArrayList<UserModel>();

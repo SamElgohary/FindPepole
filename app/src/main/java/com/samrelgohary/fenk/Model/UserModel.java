@@ -7,13 +7,11 @@ public class UserModel {
     String img;
     String fName;
     String lName;
+    String fullName;
     String email;
     String dateOfBirth;
     String gender;
     String phone;
-
-    Double lat;
-    Double lng;
 
     public String getSocialId() {
         return socialId;
@@ -79,19 +77,11 @@ public class UserModel {
         this.phone = phone;
     }
 
-    public Double getLat() {
-        return lat;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setLat(Double lat) {
-        this.lat = lat;
-    }
-
-    public Double getLng() {
-        return lng;
-    }
-
-    public void setLng(Double lng) {
-        this.lng = lng;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 }
