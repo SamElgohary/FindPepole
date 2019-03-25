@@ -69,9 +69,6 @@
                     android:layout_height="@dimen/_30sdp"
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/_4sdp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
                     android:background="@drawable/ic_person_wight_24dp"
                     app:civ_border_color="@color/wight"
                     app:civ_border_width="2dp"/>
