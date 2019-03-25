@@ -79,7 +79,8 @@ public class AddToCircleActivity extends AppCompatActivity {
                         String selection = (String)parent.getItemAtPosition(position);
                         Log.i("selection","" + selection);
 
-                        getUserProfile(selection);                    }
+                        getUserProfile(selection);
+                    }
                 });
             }
 
@@ -111,6 +112,14 @@ public class AddToCircleActivity extends AppCompatActivity {
 
                     Intent intent = new Intent(AddToCircleActivity.this,UserProfileActivity.class);
                     intent.putExtra("userId",itemSnapShot.child("socialId").getValue(String.class));
+
+                    intent.putExtra("fullName",itemSnapShot.child("fullName").getValue(String.class));
+                    intent.putExtra("email",itemSnapShot.child("email").getValue(String.class));
+                    intent.putExtra("phone",itemSnapShot.child("phone").getValue(String.class));
+                    intent.putExtra("img",itemSnapShot.child("img").getValue(String.class));
+                    intent.putExtra("gender",itemSnapShot.child("gender").getValue(String.class));
+                    intent.putExtra("dateOfBirth",itemSnapShot.child("dateOfBirth").getValue(String.class));
+
                     Log.d("userId","__"+itemSnapShot.child("socialId").getValue(String.class));
                     startActivity(intent);
                 }

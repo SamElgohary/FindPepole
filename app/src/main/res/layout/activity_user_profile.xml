@@ -34,19 +34,51 @@
                 android:gravity="center"
                 android:textSize="@dimen/_20ssp" />
 
-            <ImageView
+            <LinearLayout
+                android:id="@+id/chat_and_live"
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:src="@drawable/ic_chat_black_24dp"
-                android:layout_gravity="center"
-                android:layout_height="wrap_content" />
+                android:visibility="gone"
+                android:layout_height="match_parent"
+                android:layout_weight="2">
 
-            <ImageView
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_chat_black_24dp"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_location_searching_black_24dp"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/add_to"
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:src="@drawable/ic_location_searching_black_24dp"
-                android:layout_gravity="center"
-                android:layout_height="wrap_content" />
+                android:orientation="horizontal"
+                android:background="@color/overcast"
+                android:layout_height="match_parent"
+                android:layout_weight="2">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_person_add_ice_24dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_margin="@dimen/_4sdp"
+                    android:text="Add to your circle"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
