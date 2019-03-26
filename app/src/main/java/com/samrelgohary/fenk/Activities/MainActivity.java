@@ -10,6 +10,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -107,6 +108,8 @@ public class MainActivity extends AppCompatActivity {
         mTopBarTV = (TextView) findViewById(R.id.top_bar_tv);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        Log.d("testApi", "___"+ String.valueOf(R.string.google_maps_key));
 
         loadFragment(fragment);
          getUserData();
