@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "997254126683-5bg38lts9vifqgnoptdrc0esqt7luk6b.apps.googleusercontent.com",
+          "client_id": "997254126683-sga6i42p9usog75pt6c2hihnc1u14uef.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.samrelgohary.fenk",
-            "certificate_hash": "e482ddd493516b86a2408daebc88d7c0bc3eae98"
+            "certificate_hash": "3d62a9b7dce67b09970d4c2b72ae8f2250d2d9d1"
           }
         },
         {
