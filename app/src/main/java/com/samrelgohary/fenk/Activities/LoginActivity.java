@@ -33,7 +33,10 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.samrelgohary.fenk.MapsActivity;
+import com.samrelgohary.fenk.Model.UserModel;
 import com.samrelgohary.fenk.R;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -208,9 +211,8 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "sign in error", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                    startActivity(intent);
-                    finish();
+
+                    saveUserData();
                 }
             }
         });
@@ -242,6 +244,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+
         Log.d("TECSTORE", "firebaseAuthWithGoogle:" + acct.getId());
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
@@ -251,9 +254,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
                         Log.d("TECSTORE", "signInWithCredential:onComplete:" + task.isSuccessful());
-                        Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                        startActivity(intent);
-                        finish();
+                       saveUserData();
 
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
@@ -277,9 +278,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d("TECSTORE", "signInWithCredential:onComplete:" + task.isSuccessful());
-                        Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                        startActivity(intent);
-                        finish();
+                        saveUserData();
 
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
@@ -330,5 +329,24 @@ public class LoginActivity extends AppCompatActivity {
         return key;
     }
 
+    public void saveUserData(){
 
+        final UserModel userModel = new UserModel();
+
+        userModel.setSocialId(mAuth.getCurrentUser().getUid());
+        userModel.setEmail(mAuth.getCurrentUser().getEmail());
+        userModel.setDateOfBirth("");
+        userModel.setGender("");
+        userModel.setPhone("");
+        userModel.setImg(String.valueOf(mAuth.getCurrentUser().getPhotoUrl()));
+        userModel.setFullName(mAuth.getCurrentUser().getDisplayName());
+
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference ref = firebaseDatabase.getReference();
+        ref.child("user").child((mAuth.getCurrentUser().getUid())).setValue(userModel);
+
+        Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }

@@ -103,8 +103,7 @@ public class CircleFragment extends Fragment {
 
                     UserModel userModel = new UserModel();
 
-                    userModel.setfName(itemSnapShot.child("fName").getValue(String.class));
-                    userModel.setlName(itemSnapShot.child("lName").getValue(String.class));
+                    userModel.setFullName(itemSnapShot.child("fullName").getValue(String.class));
                     userModel.setImg(itemSnapShot.child("img").getValue(String.class));
                     userModel.setSocialId(itemSnapShot.child("socialId").getValue(String.class));
 

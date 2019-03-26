@@ -1,11 +1,15 @@
 package com.samrelgohary.fenk.Activities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -59,6 +63,9 @@ public class SignupActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+        isReadStoragePermissionGranted();
+        isWriteStoragePermissionGranted();
+
 
         mUserImg    = findViewById(R.id.user_img_profile);
         mFName      = findViewById(R.id.f_name);
@@ -73,6 +80,7 @@ public class SignupActivity extends AppCompatActivity {
         mUserImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
                 startActivityForResult(intent, 1);
@@ -118,8 +126,6 @@ public class SignupActivity extends AppCompatActivity {
         final UserModel userModel = new UserModel();
 
         userModel.setSocialId(mAuth.getCurrentUser().getUid());
-        userModel.setfName(mFName.getText().toString());
-        userModel.setlName(mLtName.getText().toString());
         userModel.setEmail(mEmail.getText().toString());
         userModel.setDateOfBirth(mBirthDate.getText().toString());
         userModel.setGender(String.valueOf(radioButton.getText()));
@@ -196,6 +202,45 @@ public class SignupActivity extends AppCompatActivity {
             final Uri imageUri = data.getData();
             resultUri = imageUri;
             mUserImg.setImageURI(resultUri);
+        }
+    }
+
+    //Getting read and write permission from External Storage in android
+    public  boolean isReadStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                Log.v("TAG","Permission is granted1");
+                return true;
+            } else {
+
+                Log.v("TAG","Permission is revoked1");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 3);
+                return false;
+            }
+        }
+        else { //permission is automatically granted on sdk<23 upon installation
+            Log.v("TAG","Permission is granted1");
+            return true;
+        }
+    }
+
+    public  boolean isWriteStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                Log.v("TAG","Permission is granted2");
+                return true;
+            } else {
+
+                Log.v("TAG","Permission is revoked2");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
+                return false;
+            }
+        }
+        else { //permission is automatically granted on sdk<23 upon installation
+            Log.v("TAG","Permission is granted2");
+            return true;
         }
     }
 }

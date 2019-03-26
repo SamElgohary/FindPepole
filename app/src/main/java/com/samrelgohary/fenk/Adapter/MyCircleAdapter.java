@@ -80,7 +80,7 @@ public class MyCircleAdapter extends ArrayAdapter<UserModel> implements ListAdap
         //Receive data here to view School item
         UserModel userModel = mGridData.get(position);
 
-       holder.userName.setText(userModel.getfName()+ " " + userModel.getlName());
+       holder.userName.setText(userModel.getFullName());
 
        if (!userModel.getImg().isEmpty()) {
            Picasso.get().load(userModel.getImg()).into(holder.userProfileImg);

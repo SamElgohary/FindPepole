@@ -5,8 +5,6 @@ public class UserModel {
     String socialId;
 
     String img;
-    String fName;
-    String lName;
     String fullName;
     String email;
     String dateOfBirth;
@@ -27,22 +25,6 @@ public class UserModel {
 
     public void setImg(String img) {
         this.img = img;
-    }
-
-    public String getfName() {
-        return fName;
-    }
-
-    public void setfName(String fName) {
-        this.fName = fName;
-    }
-
-    public String getlName() {
-        return lName;
-    }
-
-    public void setlName(String lName) {
-        this.lName = lName;
     }
 
     public String getEmail() {

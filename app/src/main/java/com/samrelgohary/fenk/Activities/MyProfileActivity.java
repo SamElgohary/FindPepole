@@ -48,7 +48,7 @@ public class MyProfileActivity extends AppCompatActivity {
                 }
             });
 
-        mUserName.setText(getDefaults("fName",getApplicationContext()) + " " + getDefaults("lName",getApplicationContext()));
+        mUserName.setText(getDefaults("fullName",getApplicationContext()));
         mUserEmail.setText(getDefaults("email",getApplicationContext()));
         mUserPhone.setText(getDefaults("phone",getApplicationContext()));
         mUserGender.setText(getDefaults("gender",getApplicationContext()));

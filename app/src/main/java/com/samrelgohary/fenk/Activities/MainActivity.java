@@ -1,13 +1,18 @@
 package com.samrelgohary.fenk.Activities;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -84,10 +89,19 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    @RequiresApi()
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            return;
+        }else{
+            // Write you code here if permission already given.
+        }
+
 
         mConstraintLayout = findViewById(R.id.constraintLayout);
 
@@ -140,14 +154,11 @@ public class MainActivity extends AppCompatActivity {
                         setDefaults("userImg",map.get("img").toString(),MainActivity.this);
                         Picasso.get().load(mProfileImageUrl).into(mUserImgProfile);
                     }
-                    setDefaults("fName",map.get("fName").toString(),MainActivity.this);
-                    setDefaults("lName",map.get("lName").toString(),MainActivity.this);
+                    setDefaults("fullName",map.get("fullName").toString(),MainActivity.this);
                     setDefaults("email",map.get("email").toString(),MainActivity.this);
                     setDefaults("dateOfBirth",map.get("dateOfBirth").toString(),MainActivity.this);
                     setDefaults("gender",map.get("gender").toString(),MainActivity.this);
                     setDefaults("phone",map.get("phone").toString(),MainActivity.this);
-                    setDefaults("lat",map.get("lat").toString(),MainActivity.this);
-                    setDefaults("lng",map.get("lng").toString(),MainActivity.this);
                     setDefaults("socialId",map.get("socialId").toString(),MainActivity.this);
 
                 }
