@@ -93,7 +93,7 @@ public class CircleFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                getMyCircle(searchBar.getText().toString());
+                getRequestsId(searchBar.getText().toString());
             }
 
             @Override
@@ -103,7 +103,7 @@ public class CircleFragment extends Fragment {
         });
 
 
-        getMyCircle("");
+        getRequestsId("");
 
         return view;
     }
@@ -113,7 +113,48 @@ public class CircleFragment extends Fragment {
         return preferences.getString(key, null);
     }
 
-    public void getMyCircle(final String key) {
+    public void getRequestsId(final String key) {
+
+        Query query ;
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        query = ref.child("myFriends");
+
+        try{query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                 mUserData.clear();
+
+                for (DataSnapshot itemSnapShot : dataSnapshot.getChildren()) {
+
+                    //  UserModel userModel = new UserModel();
+
+                    if (itemSnapShot.child("id").getValue(String.class).equals(getDefaults("socialId",getApplicationContext()))) {
+
+                        mGVMyCircle.setVisibility(View.VISIBLE);
+                        getMyCircle(key,itemSnapShot.child("friendId").getValue(String.class));
+
+                        Log.d("getFriendId", "__" + itemSnapShot.child("friendId").getValue(String.class));
+
+                        //mUserData.add(userModel);
+                    }
+//                    mProgressBar.setVisibility(View.GONE);
+
+                }
+                //mCircleAdapter.setGridData(mUserData);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });} catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void getMyCircle(final String key, final String id) {
 
         Log.i("key","___"+key);
 
@@ -126,19 +167,22 @@ public class CircleFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                mUserData.clear();
-
                 for (DataSnapshot itemSnapShot : dataSnapshot.getChildren()) {
 
                     UserModel userModel = new UserModel();
 
-                    if (itemSnapShot.child("fullName").getValue(String.class).contains(key)) {
+                    if (itemSnapShot.child("socialId").getValue(String.class).equals(id)) {
 
-                        userModel.setFullName(itemSnapShot.child("fullName").getValue(String.class));
-                        userModel.setImg(itemSnapShot.child("img").getValue(String.class));
-                        userModel.setSocialId(itemSnapShot.child("socialId").getValue(String.class));
+                        if (itemSnapShot.child("fullName").getValue(String.class).contains(key)) {
 
-                        mUserData.add(userModel);
+                            userModel.setFullName(itemSnapShot.child("fullName").getValue(String.class));
+                            userModel.setImg(itemSnapShot.child("img").getValue(String.class));
+                            userModel.setSocialId(itemSnapShot.child("socialId").getValue(String.class));
+
+                            Log.d("getFullName", "__" + itemSnapShot.child("fullName").getValue(String.class));
+
+                            mUserData.add(userModel);
+                        }
                     }
 //                    mProgressBar.setVisibility(View.GONE);
 
