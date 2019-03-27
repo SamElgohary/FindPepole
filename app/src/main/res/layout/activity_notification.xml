@@ -22,60 +22,59 @@
             tools:ignore="MissingConstraints">
 
 
-           <ImageView
+            <ImageView
                 android:id="@+id/back"
                 android:layout_width="0dp"
-               android:layout_weight="1"
+                android:layout_weight="1"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/_4sdp"
                 android:background="@drawable/ic_arrow_back_black_24dp"/>
 
-            <AutoCompleteTextView
-                android:id="@+id/search_atv"
+            <TextView
                 android:layout_width="0dp"
                 android:layout_weight="8"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:padding="@dimen/_4sdp"
+                android:gravity="center|left"
+                android:textColor="@color/wight"
+                android:textSize="@dimen/_20sdp"
                 android:maxLines="1"
-                android:imeOptions="actionSearch"
+                android:layout_margin="@dimen/_4sdp"
+                android:text="Notification"
                 android:layout_marginRight="@dimen/_16sdp"
                 android:layout_marginLeft="@dimen/_8sdp"
-                android:background="@drawable/custom_search"
-                android:hint="@string/search_on_new_people"
-                android:textColor="@color/black"/>
+            />
 
         </LinearLayout>
 
         <GridView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/search_ll"
             android:visibility="gone"
-            android:id="@+id/gv_circle">
+            android:id="@+id/gv_notification">
 
         </GridView>
 
-       <LinearLayout
-           android:id="@+id/content"
-           android:layout_width="match_parent"
-           android:layout_gravity="center"
-           android:gravity="center"
-           android:orientation="vertical"
-           android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
 
-           <ImageView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:src="@drawable/ic_search_black_24dp"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_notifications_off_ice_120dp"/>
 
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="Enter name or mobile friends to find them"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No Notification yet"/>
 
-       </LinearLayout>
+        </LinearLayout>
 
     </LinearLayout>
 

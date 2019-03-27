@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String userID;
     private String mProfileImageUrl;
-    ImageView mUserImgProfile;
+    ImageView mUserImgProfile, mNotificationIcon;
 
 
     Fragment fragment = new HomeFragment();
@@ -89,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    @RequiresApi()
+    @Nullable
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +102,16 @@ public class MainActivity extends AppCompatActivity {
         }else{
             // Write you code here if permission already given.
         }
+
+        mNotificationIcon = findViewById(R.id.notification_icon);
+        mNotificationIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(MainActivity.this,NotificationActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         mConstraintLayout = findViewById(R.id.constraintLayout);

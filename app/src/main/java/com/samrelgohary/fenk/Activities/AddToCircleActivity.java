@@ -1,14 +1,20 @@
 package com.samrelgohary.fenk.Activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -18,17 +24,23 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.samrelgohary.fenk.Adapter.AllCircleAdapter;
+import com.samrelgohary.fenk.Adapter.MyCircleAdapter;
 import com.samrelgohary.fenk.Model.UserModel;
 import com.samrelgohary.fenk.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 public class AddToCircleActivity extends AppCompatActivity {
 
     ImageView mBack;
-    AutoCompleteTextView mSearchACTV;
+    private GridView mGVMyCircle;
+    private AllCircleAdapter mCircleAdapter;
+    private ArrayList<UserModel> mUserData;
 
-    private ArrayList<String> mUsersNames;
+    AutoCompleteTextView searchBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,45 +55,64 @@ public class AddToCircleActivity extends AppCompatActivity {
             }
         });
 
-        mSearchACTV = findViewById(R.id.search_atv);
+        mGVMyCircle = (GridView) findViewById(R.id.gv_circle);
+        mUserData = new ArrayList<UserModel>();
+        mCircleAdapter = new AllCircleAdapter(AddToCircleActivity.this, R.layout.all_circle_item, mUserData);
+        mGVMyCircle.setAdapter(mCircleAdapter);
 
-        getPeopleByName();
+        searchBar = findViewById(R.id.search_atv);
+        searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                mGVMyCircle.setVisibility(View.VISIBLE);
+                getMyCircle(searchBar.getText().toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        
     }
 
-    public void getPeopleByName(){
+    public void getMyCircle(final String key) {
 
-        mUsersNames = new ArrayList<>();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (this,R.layout.custome_actv, mUsersNames);
-        mSearchACTV.setThreshold(2);
-        mSearchACTV.setAdapter(adapter);
+        Log.i("key","___"+key);
 
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference ref = database.getReference("user");
+        Query query ;
 
-        try{ref.addValueEventListener(new ValueEventListener() {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        query = ref.child("user");
+
+        try{query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+                mUserData.clear();
+
                 for (DataSnapshot itemSnapShot : dataSnapshot.getChildren()) {
 
-                    mUsersNames.add(itemSnapShot.child("fullName").getValue(String.class));
-                    mUsersNames.add(itemSnapShot.child("phone").getValue(String.class));
+                    UserModel userModel = new UserModel();
+
+                    if (itemSnapShot.child("fullName").getValue(String.class).contains(key)) {
+
+                        userModel.setFullName(itemSnapShot.child("fullName").getValue(String.class));
+                        userModel.setImg(itemSnapShot.child("img").getValue(String.class));
+                        userModel.setSocialId(itemSnapShot.child("socialId").getValue(String.class));
+
+                        mUserData.add(userModel);
+                    }
+//                    mProgressBar.setVisibility(View.GONE);
 
                 }
-
-                mSearchACTV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long rowId) {
-
-                        mSearchACTV.requestFocus();
-
-                        String selection = (String)parent.getItemAtPosition(position);
-                        Log.i("selection","" + selection);
-
-                        getUserProfile(selection);
-                    }
-                });
+                mCircleAdapter.setGridData(mUserData);
             }
 
             @Override
@@ -91,44 +122,6 @@ public class AddToCircleActivity extends AppCompatActivity {
         });} catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public void getUserProfile(String key){
-
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        Query Query;
-
-        if (key.matches("0123456789")){
-             Query = ref.child("user").orderByChild("phone").equalTo(key);
-
-        }else{
-             Query = ref.child("user").orderByChild("fullName").equalTo(key);
-        }
-
-            Query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot itemSnapShot: dataSnapshot.getChildren()) {
-
-                    Intent intent = new Intent(AddToCircleActivity.this,UserProfileActivity.class);
-                    intent.putExtra("userId",itemSnapShot.child("socialId").getValue(String.class));
-
-                    intent.putExtra("fullName",itemSnapShot.child("fullName").getValue(String.class));
-                    intent.putExtra("email",itemSnapShot.child("email").getValue(String.class));
-                    intent.putExtra("phone",itemSnapShot.child("phone").getValue(String.class));
-                    intent.putExtra("img",itemSnapShot.child("img").getValue(String.class));
-                    intent.putExtra("gender",itemSnapShot.child("gender").getValue(String.class));
-                    intent.putExtra("dateOfBirth",itemSnapShot.child("dateOfBirth").getValue(String.class));
-
-                    Log.d("userId","__"+itemSnapShot.child("socialId").getValue(String.class));
-                    startActivity(intent);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
 
     }
 }

@@ -7,9 +7,13 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -44,6 +48,9 @@ public class CircleFragment extends Fragment {
 
     ImageView mUserImgProfile, mAddPepole;
 
+    AutoCompleteTextView searchBar;
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -76,8 +83,27 @@ public class CircleFragment extends Fragment {
         mCircleAdapter = new MyCircleAdapter(getActivity(), R.layout.my_circle_item, mUserData);
         mGVMyCircle.setAdapter(mCircleAdapter);
 
+        searchBar = view.findViewById(R.id.top_bar_tv);
+        searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-        getMyCircle();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                getMyCircle(searchBar.getText().toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
+        getMyCircle("");
 
         return view;
     }
@@ -87,13 +113,16 @@ public class CircleFragment extends Fragment {
         return preferences.getString(key, null);
     }
 
-    public void getMyCircle() {
-        //Query applesQuery = ref.child("Orders").orderByChild("orderTitle").equalTo(orderTitle);
+    public void getMyCircle(final String key) {
 
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference ref = database.getReference("user");
+        Log.i("key","___"+key);
 
-        try{ref.addValueEventListener(new ValueEventListener() {
+        Query query ;
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        query = ref.child("user");
+
+        try{query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -103,11 +132,14 @@ public class CircleFragment extends Fragment {
 
                     UserModel userModel = new UserModel();
 
-                    userModel.setFullName(itemSnapShot.child("fullName").getValue(String.class));
-                    userModel.setImg(itemSnapShot.child("img").getValue(String.class));
-                    userModel.setSocialId(itemSnapShot.child("socialId").getValue(String.class));
+                    if (itemSnapShot.child("fullName").getValue(String.class).contains(key)) {
 
-                    mUserData.add(userModel);
+                        userModel.setFullName(itemSnapShot.child("fullName").getValue(String.class));
+                        userModel.setImg(itemSnapShot.child("img").getValue(String.class));
+                        userModel.setSocialId(itemSnapShot.child("socialId").getValue(String.class));
+
+                        mUserData.add(userModel);
+                    }
 //                    mProgressBar.setVisibility(View.GONE);
 
                 }

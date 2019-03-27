@@ -4,6 +4,7 @@ public class CircleModel {
 
     String id;
     String friendId;
+    String date;
 
     public String getId() {
         return id;
@@ -19,5 +20,13 @@ public class CircleModel {
 
     public void setFriendId(String friendId) {
         this.friendId = friendId;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

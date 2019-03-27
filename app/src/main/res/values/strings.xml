@@ -37,4 +37,5 @@
     <string name="title_activity_maps">Map</string>
     <string name="search_in_your_circle">Search in Your Circle</string>
     <string name="search_on_new_people">search on new People</string>
+    <string name="add_to_my_circle">Add To My Circle</string>
 </resources>
