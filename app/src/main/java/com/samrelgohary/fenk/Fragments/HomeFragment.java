@@ -163,17 +163,17 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
     public void onDestroy() {
         super.onDestroy();
         mMapView.onDestroy();
+
+//        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("realTimeLocation");
+//        GeoFire geoFire = new GeoFire(ref);
+//        geoFire.removeLocation(userId);
     }
 
     @Override
     public void onStop(){
         super.onStop();
 
-//        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-//        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("realTimeLocation");
-//
-//        GeoFire geoFire = new GeoFire(ref);
-//        geoFire.removeLocation(userId);
     }
 
     @Override

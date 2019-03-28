@@ -27,19 +27,8 @@
             android:id="@+id/contentMessageChat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:_backgroundColor="#fff"
-            android:backgroundColorPressed="#FFBABABA"
-            android:arrowGravity="end"
-            android:arrowPosition="left"
-            android:text="this words will bedmkslmdlsmdklslkdmdklskdls
-kdlskdslkdsl
-kdslkdlskds
-kdlskdsldksl
-dsljdsljdsld
-dlsdsldjljdjdljkdsjkllkjdslkfjsdlfjldsfjdfdslfjld
-ndlsnfldnfdskl"
-            android:cornerRadius="3dp"
-            android:showArrow="true"
+           android:background="@color/wight"
+            android:padding="10dp"
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@+id/ivUserChat"/>
 
@@ -75,25 +64,13 @@ ndlsnfldnfdskl"
             android:layout_alignBottom="@+id/contentMessageChatRight" />
 
         <TextView
-            android:layout_toLeftOf="@+id/ivUserChatRight"
             android:layout_toStartOf="@+id/ivUserChatRight"
             android:id="@+id/contentMessageChatRight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:text="jkfdjfkdfjdkfjkjfkjfkdfj fkdjfdkjf
-jfkdjfdkf
-jfkdjfkd
-jfdjfkdjfkd
-jkfdjfkdfj"
-            android:arrowGravity="end"
-            android:arrowMargin="3dp"
-            android:arrowPosition="right"
-            android:backgroundColor="@color/colorAccent"
-            android:backgroundColorPressed="#FFBABABA"
-            android:contentPadding="10dp"
-            android:cornerRadius="3dp"
-            android:showArrow="true"
+            android:background="@color/colorAccent"
+            android:padding="10dp"
             >
 
 
@@ -107,7 +84,7 @@ jkfdjfkdfj"
             android:layout_alignRight="@id/contentMessageChatRight"
             android:layout_below="@id/contentMessageChatRight"
             android:layout_marginBottom="25dp"
-            android:padding="10dp"
+            android:padding="@dimen/_10sdp"
             android:textSize="10sp" />
 
     </RelativeLayout>
