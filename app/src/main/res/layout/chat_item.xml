@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="5dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
+
+    <RelativeLayout
+        android:id="@+id/chatLeft"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+        <ImageView
+            android:layout_alignBottom="@+id/contentMessageChat"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/user"
+            android:id="@+id/ivUserChat" />
+
+        <TextView
+            android:id="@+id/contentMessageChat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:_backgroundColor="#fff"
+            android:backgroundColorPressed="#FFBABABA"
+            android:arrowGravity="end"
+            android:arrowPosition="left"
+            android:text="this words will bedmkslmdlsmdklslkdmdklskdls
+kdlskdslkdsl
+kdslkdlskds
+kdlskdsldksl
+dsljdsljdsld
+dlsdsldjljdjdljkdsjkllkjdslkfjsdlfjldsfjdfdslfjld
+ndlsnfldnfdskl"
+            android:cornerRadius="3dp"
+            android:showArrow="true"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/ivUserChat"/>
+
+        <TextView
+            android:text="22/06/2016"
+            android:id="@+id/timestamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="6dp"
+            android:textSize="10sp"
+            android:layout_below="@+id/contentMessageChat"
+            android:layout_toEndOf="@+id/ivUserChat" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/chatRight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:paddingTop="5dp"
+        android:paddingRight="16dp">
+
+        <ImageView
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:id="@+id/ivUserChatRight"
+            android:src="@drawable/user"
+            android:layout_alignBottom="@+id/contentMessageChatRight" />
+
+        <TextView
+            android:layout_toLeftOf="@+id/ivUserChatRight"
+            android:layout_toStartOf="@+id/ivUserChatRight"
+            android:id="@+id/contentMessageChatRight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="jkfdjfkdfjdkfjkjfkjfkdfj fkdjfdkjf
+jfkdjfdkf
+jfkdjfkd
+jfdjfkdjfkd
+jkfdjfkdfj"
+            android:arrowGravity="end"
+            android:arrowMargin="3dp"
+            android:arrowPosition="right"
+            android:backgroundColor="@color/colorAccent"
+            android:backgroundColorPressed="#FFBABABA"
+            android:contentPadding="10dp"
+            android:cornerRadius="3dp"
+            android:showArrow="true"
+            >
+
+
+        </TextView>
+
+        <TextView
+            android:text="22/06/2016"
+            android:id="@+id/timestampRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@id/contentMessageChatRight"
+            android:layout_below="@id/contentMessageChatRight"
+            android:layout_marginBottom="25dp"
+            android:padding="10dp"
+            android:textSize="10sp" />
+
+    </RelativeLayout>
+
+
+
+</LinearLayout>
