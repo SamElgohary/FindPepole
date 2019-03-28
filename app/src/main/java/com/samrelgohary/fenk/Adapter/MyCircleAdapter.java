@@ -2,6 +2,7 @@ package com.samrelgohary.fenk.Adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.samrelgohary.fenk.Activities.ChatActivity;
 import com.samrelgohary.fenk.Model.CircleModel;
 import com.samrelgohary.fenk.Model.UserModel;
 import com.samrelgohary.fenk.R;
@@ -92,7 +94,17 @@ public class MyCircleAdapter extends ArrayAdapter<UserModel> implements ListAdap
            Picasso.get().load(userModel.getImg()).into(holder.userProfileImg);
        }
 
-        //Log.i("channelName2", "___" +UserModel.getCategory_name());
+
+       holder.chatIcon.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               Intent intent = new Intent(getContext(), ChatActivity.class);
+               intent.putExtra("friendName",userModel.getFullName());
+               intent.putExtra("friendPhoto",userModel.getImg());
+               intent.putExtra("friendId",userModel.getSocialId());
+               mContext.startActivity(intent);
+           }
+       });
 
         return row;
     }
