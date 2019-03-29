@@ -139,7 +139,6 @@ public class CircleFragment extends Fragment {
                         //mUserData.add(userModel);
                     }
 //                    mProgressBar.setVisibility(View.GONE);
-
                 }
                 //mCircleAdapter.setGridData(mUserData);
             }
@@ -151,7 +150,6 @@ public class CircleFragment extends Fragment {
         });} catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public void getMyCircle(final String key, final String id) {

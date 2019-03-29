@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/user_item_ll"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_60sdp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:background="@color/overcast"
+        android:orientation="horizontal">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/user_img_profile"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/user"
+            android:layout_weight="1"
+            android:padding="@dimen/_4sdp"
+            app:civ_border_color="@color/ice"
+            app:civ_border_width="2dp"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:layout_margin="@dimen/_2sdp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_2sdp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Eslam Elgohary"
+                    android:textStyle="bold"
+                    android:maxLines="1"
+                    android:gravity="left"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:textSize="@dimen/_14ssp" />
+
+                <TextView
+                    android:id="@+id/message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="sent friend Request to you"
+                    android:gravity="left"
+                    android:maxLines="1"
+                    android:textSize="@dimen/_10ssp" />
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/ice"
+        android:layout_height="@dimen/_1sdp"/>
+
+
+</LinearLayout>

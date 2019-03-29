@@ -78,8 +78,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.navigation_chat:
                     fragment = new ChatFragment();
-                    mConstraintLayout.setVisibility(View.VISIBLE);
-                    mTopBarTV.setText(getString(R.string.title_chat));
+                    mConstraintLayout.setVisibility(View.GONE);
                     break;
                 case R.id.navigation_more:
                     fragment = new MoreFragment();

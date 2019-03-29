@@ -98,27 +98,35 @@ public class ChatAdapter extends ArrayAdapter<ChatModel> implements ListAdapter 
 
 
         if (chatModel.getGravity()==0) {
-            holder.chatRight.setVisibility(View.VISIBLE);
-            holder.contentMessageChatRight.setText(chatModel.getMessage());
-            holder.timestampRight.setText(chatModel.getTime());
-            Picasso.get().load(chatModel.getUserProfilePic()).into(holder.ivUserChatRight);
 
+            Log.d("contentMessageChatRight","__"+chatModel.getMessage());
+            if(chatModel.getMessage()==null){
+                holder.chatRight.setVisibility(View.GONE);
+                holder.chatLeft.setVisibility(View.GONE);
+            }else {
+                holder.chatRight.setVisibility(View.VISIBLE);
+                holder.chatLeft.setVisibility(View.GONE);
+                holder.contentMessageChatRight.setText(chatModel.getMessage());
+                holder.timestampRight.setText(chatModel.getTime());
+                Picasso.get().load(chatModel.getUserProfilePic()).into(holder.ivUserChatRight);
             }
-            else {
 
-            holder.chatRight.setVisibility(View.VISIBLE);
-            holder.contentMessageChatRight.setText(chatModel.getMessage());
-            holder.timestampRight.setText(chatModel.getTime());
-            Picasso.get().load(chatModel.getUserProfilePic()).into(holder.ivUserChatRight);
         }
 
+            if(chatModel.getGravity()==1) {
 
-        if (chatModel.getGravity()==1) {
-            holder.chatLeft.setVisibility(View.VISIBLE);
-            holder.contentMessageChatLeft.setText(chatModel.getMessage());
-            holder.timestampLeft.setText(chatModel.getTime());
-            Picasso.get().load(chatModel.getUserProfilePic()).into(holder.ivUserChatLeft);
-        }
+                if(chatModel.getMessage()== null){
+                    holder.chatLeft.setVisibility(View.GONE);
+                    holder.chatRight.setVisibility(View.GONE);
+                }else {
+                    holder.chatLeft.setVisibility(View.VISIBLE);
+                    holder.chatRight.setVisibility(View.GONE);
+                    holder.contentMessageChatLeft.setText(chatModel.getMessage());
+                    holder.timestampLeft.setText(chatModel.getTime());
+                    Picasso.get().load(chatModel.getUserProfilePic()).into(holder.ivUserChatLeft);
+                }
+            }
+
 
         return row;
     }

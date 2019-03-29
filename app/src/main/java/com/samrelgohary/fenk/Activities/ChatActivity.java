@@ -106,19 +106,17 @@ public class ChatActivity extends AppCompatActivity {
         chatModel.setTime(currentTime);
         chatModel.setFriendId(friendId);
         chatModel.setChatId(chatId);
-        ref.child(chatId).push().setValue(chatModel);
+        ref.push().setValue(chatModel);
         mMessageContent.setText("");
     }
 
     public void getChatContent(){
 
-        Query query, query1 ;
+        Query query;
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
 
-        query = ref.child("chatModel").child(getDefaults("socialId",getApplicationContext()) + "_" +  friendId);
-        query1 = ref.child("chatModel").child(friendId + "_" +  getDefaults("socialId",getApplicationContext()));
-
+        query = ref.child("chatModel");
         try{query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -127,10 +125,10 @@ public class ChatActivity extends AppCompatActivity {
                 for (DataSnapshot itemSnapShot : dataSnapshot.getChildren()) {
 
                     ChatModel chatModel = new ChatModel();
+                    ChatModel chatModel1 = new ChatModel();
 
-                    if (itemSnapShot.child("userId").getValue(String.class).equals
-                            (getDefaults("socialId",getApplicationContext()))) {
-
+                    if (itemSnapShot.child("chatId").getValue(String.class).equals
+                            (getDefaults("socialId",getApplicationContext()) + "_" +  friendId)){
                         chatModel.setFriendId(itemSnapShot.child("friendId").getValue(String.class));
                         chatModel.setChatId(itemSnapShot.child("chatId").getValue(String.class));
                         chatModel.setTime(itemSnapShot.child("time").getValue(String.class));
@@ -141,12 +139,25 @@ public class ChatActivity extends AppCompatActivity {
                         chatModel.setLocalFriendId(friendId);
                         chatModel.setGravity(0);
                         Log.d("messageRight", "__" +itemSnapShot.child("message").getValue(String.class));
-
+                    }
+                    if (itemSnapShot.child("chatId").getValue(String.class).equals
+                            (friendId + "_" +  getDefaults("socialId",getApplicationContext()))){
+                        chatModel1.setFriendId(itemSnapShot.child("friendId").getValue(String.class));
+                        chatModel1.setChatId(itemSnapShot.child("chatId").getValue(String.class));
+                        chatModel1.setTime(itemSnapShot.child("time").getValue(String.class));
+                        chatModel1.setUserProfilePic(itemSnapShot.child("userProfilePic").getValue(String.class));
+                        chatModel1.setUserId(itemSnapShot.child("userId").getValue(String.class));
+                        chatModel1.setMessage(itemSnapShot.child("message").getValue(String.class));
+                        chatModel1.setUserName(itemSnapShot.child("userName").getValue(String.class));
+                        chatModel1.setLocalFriendId(friendId);
+                        chatModel1.setGravity(1);
+                        Log.d("messageLeft", "__" +itemSnapShot.child("message").getValue(String.class));
                     }
 
 
 
                     mUserData.add(chatModel);
+                    mUserData.add(chatModel1);
 
                    // mProgressBar.setVisibility(View.GONE);
                 }
@@ -161,45 +172,6 @@ public class ChatActivity extends AppCompatActivity {
         });} catch (Exception e) {
             e.printStackTrace();
         }
-        try{query1.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                mUserData.clear();
-                for (DataSnapshot itemSnapShot : dataSnapshot.getChildren()) {
-
-                    ChatModel chatModel = new ChatModel();
-
-                    if (itemSnapShot.child("userId").getValue(String.class).equals(friendId))
-                    chatModel.setFriendId(itemSnapShot.child("friendId").getValue(String.class));
-                    chatModel.setChatId(itemSnapShot.child("chatId").getValue(String.class));
-                    chatModel.setTime(itemSnapShot.child("time").getValue(String.class));
-                    chatModel.setUserProfilePic(itemSnapShot.child("userProfilePic").getValue(String.class));
-                    chatModel.setUserId(itemSnapShot.child("userId").getValue(String.class));
-                    chatModel.setMessage(itemSnapShot.child("message").getValue(String.class));
-                    chatModel.setUserName(itemSnapShot.child("userName").getValue(String.class));
-                    chatModel.setLocalFriendId(friendId);
-                    chatModel.setGravity(1);
-
-                    Log.d("messageLeft", "__" +itemSnapShot.child("message").getValue(String.class));
-
-
-                    mUserData.add(chatModel);
-
-                    // mProgressBar.setVisibility(View.GONE);
-                }
-                mChatAdapter.setGridData(mUserData);
-                // Collections.reverse(mUserData);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });} catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
     public static String getDefaults(String key, Context context) {
