@@ -27,11 +27,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.samrelgohary.fenk.Fragments.ChatFragment;
 import com.samrelgohary.fenk.Fragments.CircleFragment;
 import com.samrelgohary.fenk.Fragments.HomeFragment;
 import com.samrelgohary.fenk.Fragments.MoreFragment;
+import com.samrelgohary.fenk.Model.ChatModel;
 import com.samrelgohary.fenk.R;
 import com.squareup.picasso.Picasso;
 
@@ -154,31 +156,45 @@ public class MainActivity extends AppCompatActivity {
 
     public void getUserData(){
 
-        mUserDatabase.addValueEventListener(new ValueEventListener() {
+        Query query ;
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        query = ref.child("user");
+
+        try{query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists() && dataSnapshot.getChildrenCount()>0){
-                    Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
 
-                    if(map.get("img")!=null){
-                        mProfileImageUrl = map.get("img").toString();
-                        setDefaults("userImg",map.get("img").toString(),MainActivity.this);
-                        Picasso.get().load(mProfileImageUrl).into(mUserImgProfile);
+                for (DataSnapshot itemSnapShot : dataSnapshot.getChildren()) {
+
+                    Log.d("newsocialId","__"+itemSnapShot.child("socialId").getValue(String.class));
+                    Log.d("localnewsocialId","___"+userID);
+
+
+                    if (itemSnapShot.child("socialId").getValue(String.class).equals(userID)) {
+
+                        if (itemSnapShot.child("img").getValue(String.class) != null) {
+                            mProfileImageUrl = itemSnapShot.child("img").getValue(String.class);
+                            setDefaults("userImg", itemSnapShot.child("img").getValue(String.class), MainActivity.this);
+                            Picasso.get().load(mProfileImageUrl).into(mUserImgProfile);
+                        }
+                        setDefaults("fullName", itemSnapShot.child("fullName").getValue(String.class), MainActivity.this);
+                        setDefaults("email", itemSnapShot.child("email").getValue(String.class), MainActivity.this);
+                        setDefaults("dateOfBirth", itemSnapShot.child("dateOfBirth").getValue(String.class), MainActivity.this);
+                        setDefaults("gender", itemSnapShot.child("gender").getValue(String.class), MainActivity.this);
+                        setDefaults("phone", itemSnapShot.child("phone").getValue(String.class), MainActivity.this);
+                        setDefaults("socialId", itemSnapShot.child("socialId").getValue(String.class), MainActivity.this);
                     }
-                    setDefaults("fullName",map.get("fullName").toString(),MainActivity.this);
-                    setDefaults("email",map.get("email").toString(),MainActivity.this);
-                    setDefaults("dateOfBirth",map.get("dateOfBirth").toString(),MainActivity.this);
-                    setDefaults("gender",map.get("gender").toString(),MainActivity.this);
-                    setDefaults("phone",map.get("phone").toString(),MainActivity.this);
-                    setDefaults("socialId",map.get("socialId").toString(),MainActivity.this);
-
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+
             }
-        });
+        });} catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public static void setDefaults(String key, String value, Context context) {
@@ -187,5 +203,6 @@ public class MainActivity extends AppCompatActivity {
         editor.putString(key, value);
         editor.commit();
     }
+
 
 }

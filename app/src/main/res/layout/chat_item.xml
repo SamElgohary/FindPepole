@@ -14,35 +14,40 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingTop="5dp"
+        android:visibility="gone"
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
-        <ImageView
-            android:layout_alignBottom="@+id/contentMessageChat"
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_alignBottom="@+id/contentMessageChatLeft"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:src="@drawable/user"
-            android:id="@+id/ivUserChat" />
+            android:id="@+id/ivUserChatLeft"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            app:civ_border_color="@color/colorAccent"
+            app:civ_border_width="2dp"/>
 
         <TextView
-            android:id="@+id/contentMessageChat"
+            android:id="@+id/contentMessageChatLeft"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-           android:background="@color/wight"
+            android:background="@color/wight"
             android:padding="10dp"
             android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/ivUserChat"/>
+            android:layout_toEndOf="@+id/ivUserChatLeft"/>
 
         <TextView
             android:text="22/06/2016"
-            android:id="@+id/timestamp"
+            android:id="@+id/timestampLeft"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:paddingLeft="10dp"
             android:paddingTop="6dp"
             android:textSize="10sp"
-            android:layout_below="@+id/contentMessageChat"
-            android:layout_toEndOf="@+id/ivUserChat" />
+            android:layout_below="@+id/contentMessageChatLeft"
+            android:layout_toEndOf="@+id/ivUserChatLeft" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -51,17 +56,21 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingLeft="16dp"
+        android:visibility="gone"
         android:paddingTop="5dp"
         android:paddingRight="16dp">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:id="@+id/ivUserChatRight"
             android:src="@drawable/user"
-            android:layout_alignBottom="@+id/contentMessageChatRight" />
+            android:layout_alignBottom="@+id/contentMessageChatRight"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            app:civ_border_color="@color/colorAccent"
+            app:civ_border_width="2dp"/>
 
         <TextView
             android:layout_toStartOf="@+id/ivUserChatRight"

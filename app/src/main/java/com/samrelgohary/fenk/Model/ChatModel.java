@@ -9,6 +9,8 @@ public class ChatModel {
     String time;
     String chatId;
     String friendId;
+    String localFriendId;
+    int    gravity;
 
 
     public String getMessage() {
@@ -65,5 +67,21 @@ public class ChatModel {
 
     public void setFriendId(String friendId) {
         this.friendId = friendId;
+    }
+
+    public String getLocalFriendId() {
+        return localFriendId;
+    }
+
+    public void setLocalFriendId(String localFriendId) {
+        this.localFriendId = localFriendId;
+    }
+
+    public int getGravity() {
+        return gravity;
+    }
+
+    public void setGravity(int gravity) {
+        this.gravity = gravity;
     }
 }

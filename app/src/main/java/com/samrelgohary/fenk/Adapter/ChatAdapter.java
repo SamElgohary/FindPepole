@@ -13,30 +13,31 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.samrelgohary.fenk.Activities.ChatActivity;
 import com.samrelgohary.fenk.Model.CircleModel;
-import com.samrelgohary.fenk.Model.UserModel;
+import com.samrelgohary.fenk.Model.ChatModel;
 import com.samrelgohary.fenk.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
 
-public class MyCircleAdapter extends ArrayAdapter<UserModel> implements ListAdapter {
+public class ChatAdapter extends ArrayAdapter<ChatModel> implements ListAdapter {
 
     private Context mContext;
     private int layoutResourceId;
     int type;
-    private ArrayList<UserModel> mGridData = new ArrayList<UserModel>();
+    private ArrayList<ChatModel> mGridData = new ArrayList<ChatModel>();
 
 
     //It is called in the activity contains 3 parameters MainActivity, item layout , Array list
-    public MyCircleAdapter(Context mContext, int layoutResourceId, ArrayList<UserModel> mGridData) {
+    public ChatAdapter(Context mContext, int layoutResourceId, ArrayList<ChatModel> mGridData) {
         super(mContext, layoutResourceId, mGridData);
         this.layoutResourceId = layoutResourceId;
         this.mContext = mContext;
@@ -44,7 +45,7 @@ public class MyCircleAdapter extends ArrayAdapter<UserModel> implements ListAdap
 
     }
 
-    public MyCircleAdapter(Context mContext, int layoutResourceId, ArrayList<UserModel> mGridData, int SelectedItemImageType) {
+    public ChatAdapter(Context mContext, int layoutResourceId, ArrayList<ChatModel> mGridData, int SelectedItemImageType) {
         super(mContext, layoutResourceId, mGridData);
         this.layoutResourceId = layoutResourceId;
         this.mContext = mContext;
@@ -57,7 +58,7 @@ public class MyCircleAdapter extends ArrayAdapter<UserModel> implements ListAdap
      *
      * @param mGridData
      */
-    public void setGridData(ArrayList<UserModel> mGridData) {
+    public void setGridData(ArrayList<ChatModel> mGridData) {
         this.mGridData = mGridData;
         notifyDataSetChanged();
     }
@@ -75,10 +76,15 @@ public class MyCircleAdapter extends ArrayAdapter<UserModel> implements ListAdap
             holder = new ViewHolder();
             //Connect the variables to id
 
-            holder.userName = row.findViewById(R.id.user_name);
-            holder.userProfileImg = row.findViewById(R.id.user_img_profile);
-            holder.chatIcon  = row.findViewById(R.id.chat_icon);
-            holder.liveLocationIcon  = row.findViewById(R.id.live_location_icon);
+            holder.contentMessageChatLeft = row.findViewById(R.id.contentMessageChatLeft);
+            holder.timestampLeft = row.findViewById(R.id.timestampLeft);
+            holder.ivUserChatLeft  = row.findViewById(R.id.ivUserChatLeft);
+            holder.contentMessageChatRight  = row.findViewById(R.id.contentMessageChatRight);
+            holder.timestampRight  = row.findViewById(R.id.timestampRight);
+            holder.ivUserChatRight  = row.findViewById(R.id.ivUserChatRight);
+            holder.chatLeft = row.findViewById(R.id.chatLeft);
+            holder.chatRight = row.findViewById(R.id.chatRight);
+
 
             row.setTag(holder);
         } else {
@@ -86,27 +92,33 @@ public class MyCircleAdapter extends ArrayAdapter<UserModel> implements ListAdap
         }
 
         //Receive data here to view School item
-        final UserModel userModel = mGridData.get(position);
+        final ChatModel chatModel = mGridData.get(position);
 
-       holder.userName.setText(userModel.getFullName());
-
-       if (!userModel.getImg().isEmpty()) {
-           Picasso.get().load(userModel.getImg()).into(holder.userProfileImg);
-       }
+        Log.d("gravityValue","___"+chatModel.getGravity());
 
 
-       holder.chatIcon.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               Intent intent = new Intent(getContext(), ChatActivity.class);
-               intent.putExtra("friendName",userModel.getFullName());
-               intent.putExtra("friendPhoto",userModel.getImg());
-               intent.putExtra("friendId",userModel.getSocialId());
-               mContext.startActivity(intent);
-               //((Activity)mContext).finish();
+        if (chatModel.getGravity()==0) {
+            holder.chatRight.setVisibility(View.VISIBLE);
+            holder.contentMessageChatRight.setText(chatModel.getMessage());
+            holder.timestampRight.setText(chatModel.getTime());
+            Picasso.get().load(chatModel.getUserProfilePic()).into(holder.ivUserChatRight);
 
-           }
-       });
+            }
+            else {
+
+            holder.chatRight.setVisibility(View.VISIBLE);
+            holder.contentMessageChatRight.setText(chatModel.getMessage());
+            holder.timestampRight.setText(chatModel.getTime());
+            Picasso.get().load(chatModel.getUserProfilePic()).into(holder.ivUserChatRight);
+        }
+
+
+        if (chatModel.getGravity()==1) {
+            holder.chatLeft.setVisibility(View.VISIBLE);
+            holder.contentMessageChatLeft.setText(chatModel.getMessage());
+            holder.timestampLeft.setText(chatModel.getTime());
+            Picasso.get().load(chatModel.getUserProfilePic()).into(holder.ivUserChatLeft);
+        }
 
         return row;
     }
@@ -114,14 +126,16 @@ public class MyCircleAdapter extends ArrayAdapter<UserModel> implements ListAdap
     //Definition of variables
     static class ViewHolder {
 
-        TextView userName;
-        ImageView userProfileImg,chatIcon,liveLocationIcon;
-
+        TextView  contentMessageChatLeft,timestampLeft,  contentMessageChatRight, timestampRight ;
+        ImageView ivUserChatLeft, ivUserChatRight;
+        RelativeLayout chatLeft,chatRight;
     }
 
     public static String getDefaults(String key, Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getString(key, null);
     }
+
+
 
 }

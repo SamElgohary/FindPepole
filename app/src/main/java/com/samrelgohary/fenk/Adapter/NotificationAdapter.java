@@ -119,7 +119,13 @@ public class NotificationAdapter extends ArrayAdapter<UserModel> implements List
                 circleModel.setFriendId(userModel.getSocialId());
                 circleModel.setDate(formattedDate);
 
+                CircleModel circleModel1 = new CircleModel();
+                circleModel1.setFriendId(getDefaults("socialId",getApplicationContext()));
+                circleModel1.setId(userModel.getSocialId());
+                circleModel1.setDate(formattedDate);
+
                 ref.push().setValue(circleModel);
+                ref.push().setValue(circleModel1);
 
                 cancelAction(userModel.getSocialId(),getDefaults("socialId",getContext()));
 
