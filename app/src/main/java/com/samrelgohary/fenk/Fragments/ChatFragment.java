@@ -28,11 +28,14 @@ import com.samrelgohary.fenk.Activities.AddToCircleActivity;
 import com.samrelgohary.fenk.Activities.MyProfileActivity;
 import com.samrelgohary.fenk.Adapter.ChatListAdapter;
 import com.samrelgohary.fenk.Adapter.MyCircleAdapter;
+import com.samrelgohary.fenk.Model.ChatModel;
 import com.samrelgohary.fenk.Model.UserModel;
 import com.samrelgohary.fenk.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -43,7 +46,7 @@ public class ChatFragment extends Fragment {
 
     private GridView mGVChatList;
     private ChatListAdapter mChatlistAdapter;
-    private ArrayList<UserModel> mUserData;
+    private ArrayList<ChatModel> mUserData;
 
     ImageView mUserImgProfile;
 
@@ -69,7 +72,7 @@ public class ChatFragment extends Fragment {
 
 
         mGVChatList = (GridView) view.findViewById(R.id.gv_my_circle);
-        mUserData = new ArrayList<UserModel>();
+        mUserData = new ArrayList<ChatModel>();
         mChatlistAdapter = new ChatListAdapter(getActivity(), R.layout.chat_list_item, mUserData);
         mGVChatList.setAdapter(mChatlistAdapter);
 
@@ -92,8 +95,7 @@ public class ChatFragment extends Fragment {
             }
         });
 
-
-      //getRequestsId("");
+        getRequestsId("");
 
         return view;
     }
@@ -122,7 +124,12 @@ public class ChatFragment extends Fragment {
                     if (itemSnapShot.child("id").getValue(String.class).equals(getDefaults("socialId",getApplicationContext()))) {
 
                         mGVChatList.setVisibility(View.VISIBLE);
-                        getMyCircle(key,itemSnapShot.child("friendId").getValue(String.class));
+
+                        if(key.equals("")) {
+                            getChatList();
+                        }else {
+                            getMyCircle(key, itemSnapShot.child("friendId").getValue(String.class));
+                        }
 
                         Log.d("getFriendId", "__" + itemSnapShot.child("friendId").getValue(String.class));
 
@@ -157,19 +164,19 @@ public class ChatFragment extends Fragment {
 
                 for (DataSnapshot itemSnapShot : dataSnapshot.getChildren()) {
 
-                    UserModel userModel = new UserModel();
+                    ChatModel chatModel = new ChatModel();
 
                     if (itemSnapShot.child("socialId").getValue(String.class).equals(id)) {
 
                         if (itemSnapShot.child("fullName").getValue(String.class).contains(key)) {
 
-                            userModel.setFullName(itemSnapShot.child("fullName").getValue(String.class));
-                            userModel.setImg(itemSnapShot.child("img").getValue(String.class));
-                            userModel.setSocialId(itemSnapShot.child("socialId").getValue(String.class));
+                           chatModel.setUserName(itemSnapShot.child("fullName").getValue(String.class));
+                            chatModel.setUserProfilePic(itemSnapShot.child("img").getValue(String.class));
+                            chatModel.setUserId(itemSnapShot.child("socialId").getValue(String.class));
 
                             Log.d("getFullName", "__" + itemSnapShot.child("fullName").getValue(String.class));
 
-                            mUserData.add(userModel);
+                            mUserData.add(chatModel);
                         }
                     }
 //                    mProgressBar.setVisibility(View.GONE);
@@ -177,6 +184,57 @@ public class ChatFragment extends Fragment {
                 }
                 mChatlistAdapter.setGridData(mUserData);
             }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });} catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void getChatList(){
+
+        Query query;
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+
+        query = ref.child("chatModel");
+        try{query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                mUserData.clear();
+                for (DataSnapshot itemSnapShot : dataSnapshot.getChildren()) {
+
+                    ChatModel chatModel = new ChatModel();
+
+                    if (itemSnapShot.child("friendId").getValue(String.class).equals
+                            (getDefaults("socialId", getApplicationContext()))) {
+
+                            chatModel.setTime(itemSnapShot.child("time").getValue(String.class));
+                            chatModel.setUserProfilePic(itemSnapShot.child("userProfilePic").getValue(String.class));
+                            chatModel.setMessage(itemSnapShot.child("message").getValue(String.class));
+                            chatModel.setUserName(itemSnapShot.child("userName").getValue(String.class));
+                            chatModel.setUserId(itemSnapShot.child("userId").getValue(String.class));
+                            Log.d("messageFromMe", "__" + itemSnapShot.child("message").getValue(String.class));
+                            Log.d("nameFromFragment", "___" + itemSnapShot.child("userName").getValue(String.class));
+                            Log.d("message", "__" + itemSnapShot.child("message").getValue(String.class));
+
+                       // ArrayList<String> values=new ArrayList<String>();
+                        HashSet<ChatModel> hashSet = new HashSet<ChatModel>();
+                        hashSet.addAll(Collections.singleton(chatModel));
+                        mUserData.clear();
+                        mUserData.addAll(hashSet);
+
+                            //mUserData.add(chatModel);
+                    }
+                mChatlistAdapter.setGridData(mUserData);
+                Collections.reverse(mUserData);
+            }
+        }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {

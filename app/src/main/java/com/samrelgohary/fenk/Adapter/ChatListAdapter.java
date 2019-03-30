@@ -19,23 +19,23 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.samrelgohary.fenk.Activities.ChatActivity;
 import com.samrelgohary.fenk.Model.CircleModel;
-import com.samrelgohary.fenk.Model.UserModel;
+import com.samrelgohary.fenk.Model.ChatModel;
 import com.samrelgohary.fenk.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 
-public class ChatListAdapter extends ArrayAdapter<UserModel> implements ListAdapter {
+public class ChatListAdapter extends ArrayAdapter<ChatModel> implements ListAdapter {
 
     private Context mContext;
     private int layoutResourceId;
     int type;
-    private ArrayList<UserModel> mGridData = new ArrayList<UserModel>();
+    private ArrayList<ChatModel> mGridData = new ArrayList<ChatModel>();
 
 
     //It is called in the activity contains 3 parameters MainActivity, item layout , Array list
-    public ChatListAdapter(Context mContext, int layoutResourceId, ArrayList<UserModel> mGridData) {
+    public ChatListAdapter(Context mContext, int layoutResourceId, ArrayList<ChatModel> mGridData) {
         super(mContext, layoutResourceId, mGridData);
         this.layoutResourceId = layoutResourceId;
         this.mContext = mContext;
@@ -43,7 +43,7 @@ public class ChatListAdapter extends ArrayAdapter<UserModel> implements ListAdap
 
     }
 
-    public ChatListAdapter(Context mContext, int layoutResourceId, ArrayList<UserModel> mGridData, int SelectedItemImageType) {
+    public ChatListAdapter(Context mContext, int layoutResourceId, ArrayList<ChatModel> mGridData, int SelectedItemImageType) {
         super(mContext, layoutResourceId, mGridData);
         this.layoutResourceId = layoutResourceId;
         this.mContext = mContext;
@@ -56,7 +56,7 @@ public class ChatListAdapter extends ArrayAdapter<UserModel> implements ListAdap
      *
      * @param mGridData
      */
-    public void setGridData(ArrayList<UserModel> mGridData) {
+    public void setGridData(ArrayList<ChatModel> mGridData) {
         this.mGridData = mGridData;
         notifyDataSetChanged();
     }
@@ -85,27 +85,31 @@ public class ChatListAdapter extends ArrayAdapter<UserModel> implements ListAdap
         }
 
         //Receive data here to view School item
-        final UserModel userModel = mGridData.get(position);
+        final ChatModel chatModel = mGridData.get(position);
 
-        holder.userName.setText(userModel.getFullName());
+                holder.userName.setText(chatModel.getUserName());
+                holder.lastMessage.setText(chatModel.getMessage());
 
-        if (!userModel.getImg().isEmpty()) {
-            Picasso.get().load(userModel.getImg()).into(holder.userProfileImg);
-        }
+                Log.d("nameFromdapter","___"+chatModel.getUserName());
+
+                if (!chatModel.getUserProfilePic().isEmpty()) {
+                    Picasso.get().load(chatModel.getUserProfilePic()).into(holder.userProfileImg);
+                }
 
 
-        holder.userItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), ChatActivity.class);
-                intent.putExtra("friendName",userModel.getFullName());
-                intent.putExtra("friendPhoto",userModel.getImg());
-                intent.putExtra("friendId",userModel.getSocialId());
-                mContext.startActivity(intent);
-                //((Activity)mContext).finish();
+                holder.userItem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getContext(), ChatActivity.class);
+                        intent.putExtra("friendName",chatModel.getUserName());
+                        intent.putExtra("friendPhoto",chatModel.getUserProfilePic());
+                        intent.putExtra("friendId",chatModel.getUserId());
+                        mContext.startActivity(intent);
+                        //((Activity)mContext).finish();
 
-            }
-        });
+                    }
+                });
+
 
         return row;
     }

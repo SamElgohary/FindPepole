@@ -41,7 +41,6 @@
                     android:id="@+id/user_name"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="Eslam Elgohary"
                     android:textStyle="bold"
                     android:maxLines="1"
                     android:gravity="left"
@@ -52,7 +51,6 @@
                     android:id="@+id/message"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="sent friend Request to you"
                     android:gravity="left"
                     android:maxLines="1"
                     android:textSize="@dimen/_10ssp" />
