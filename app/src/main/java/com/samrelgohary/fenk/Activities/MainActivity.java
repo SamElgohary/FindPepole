@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
                         setDefaults("gender", itemSnapShot.child("gender").getValue(String.class), MainActivity.this);
                         setDefaults("phone", itemSnapShot.child("phone").getValue(String.class), MainActivity.this);
                         setDefaults("socialId", itemSnapShot.child("socialId").getValue(String.class), MainActivity.this);
-                        setDefaults("loginStatus", "0", MainActivity.this);
+
                     }
                 }
             }
