@@ -20,7 +20,8 @@
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.ChatActivity"></activity>
+        <activity android:name=".Activities.LoginActivity"></activity>
+        <activity android:name=".Activities.ChatActivity" />
         <activity android:name=".Activities.NotificationActivity" />
         <activity android:name=".Activities.AddToCircleActivity" />
         <activity android:name=".Activities.UserProfileActivity" />
@@ -43,7 +44,7 @@
         <activity android:name=".Activities.SignupActivity" />
         <activity android:name=".Activities.MainActivity" />
         <activity
-            android:name=".Activities.LoginActivity"
+            android:name=".Activities.SplashScreenActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

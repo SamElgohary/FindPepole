@@ -97,12 +97,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            return;
-        }else{
-            // Write you code here if permission already given.
-        }
 
         mNotificationIcon = findViewById(R.id.notification_icon);
         mNotificationIcon.setOnClickListener(new View.OnClickListener() {
@@ -182,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
                         setDefaults("gender", itemSnapShot.child("gender").getValue(String.class), MainActivity.this);
                         setDefaults("phone", itemSnapShot.child("phone").getValue(String.class), MainActivity.this);
                         setDefaults("socialId", itemSnapShot.child("socialId").getValue(String.class), MainActivity.this);
+                        setDefaults("loginStatus", "0", MainActivity.this);
                     }
                 }
             }
