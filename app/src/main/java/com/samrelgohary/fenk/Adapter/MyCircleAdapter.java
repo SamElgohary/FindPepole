@@ -5,28 +5,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.samrelgohary.fenk.Activities.ChatActivity;
-import com.samrelgohary.fenk.MapsActivity;
-import com.samrelgohary.fenk.Model.CircleModel;
+import com.samrelgohary.fenk.Activities.MapsActivity;
 import com.samrelgohary.fenk.Model.UserModel;
 import com.samrelgohary.fenk.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class MyCircleAdapter extends ArrayAdapter<UserModel> implements ListAdapter {
 

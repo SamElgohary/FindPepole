@@ -16,8 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
+
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -35,7 +34,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.samrelgohary.fenk.MapsActivity;
 import com.samrelgohary.fenk.Model.UserModel;
 import com.samrelgohary.fenk.R;
 import java.security.MessageDigest;
