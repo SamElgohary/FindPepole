@@ -74,6 +74,7 @@ public class CircleFragment extends Fragment {
             public void onClick(View v) {
 
                 Intent intent = new Intent(getActivity(), AddToCircleActivity.class);
+                intent.putExtra("searchKey","");
                 startActivity(intent);
             }
         });

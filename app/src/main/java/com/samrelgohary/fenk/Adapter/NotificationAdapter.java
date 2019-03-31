@@ -179,7 +179,6 @@ public class NotificationAdapter extends ArrayAdapter<UserModel> implements List
                     if (itemSnapShot.child("friendId").getValue(String.class).equals(friendId)&&
                             itemSnapShot.child("id").getValue(String.class).equals(id)) {
 
-
                         Log.d("friendId", "__f" +itemSnapShot.child("friendId").getValue(String.class));
                         Log.d("id", "__f" +itemSnapShot.child("id").getValue(String.class));
 

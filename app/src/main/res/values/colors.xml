@@ -11,6 +11,7 @@
     <color name="grayDark">#6f6f6f</color>
 
     <color name="black">#000000</color>
+    <color name="hint">#D3D3D3</color>
 
 
 </resources>

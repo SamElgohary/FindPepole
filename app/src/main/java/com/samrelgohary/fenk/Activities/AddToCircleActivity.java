@@ -46,6 +46,8 @@ public class AddToCircleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_to_circle);
 
+
+
         mBack = findViewById(R.id.back);
         mBack.setOnClickListener(new View.OnClickListener() {
             @Override

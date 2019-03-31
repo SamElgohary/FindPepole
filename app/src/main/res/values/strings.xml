@@ -38,4 +38,7 @@
     <string name="search_in_your_circle">Search in Your Circle</string>
     <string name="search_on_new_people">search on new People</string>
     <string name="add_to_my_circle">Add To My Circle</string>
+    <string name="already_added">"already added"</string>
+    <string name="cancel_request">"Cancel Request"</string>
+
 </resources>
