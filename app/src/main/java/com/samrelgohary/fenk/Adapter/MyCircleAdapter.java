@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.samrelgohary.fenk.Activities.ChatActivity;
+import com.samrelgohary.fenk.MapsActivity;
 import com.samrelgohary.fenk.Model.CircleModel;
 import com.samrelgohary.fenk.Model.UserModel;
 import com.samrelgohary.fenk.R;
@@ -105,6 +106,18 @@ public class MyCircleAdapter extends ArrayAdapter<UserModel> implements ListAdap
                mContext.startActivity(intent);
                //((Activity)mContext).finish();
 
+           }
+       });
+
+       holder.liveLocationIcon.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+
+               Intent intent = new Intent(getContext(), MapsActivity.class);
+               intent.putExtra("friendName",userModel.getFullName());
+               intent.putExtra("friendPhoto",userModel.getImg());
+               intent.putExtra("friendId",userModel.getSocialId());
+               mContext.startActivity(intent);
            }
        });
 

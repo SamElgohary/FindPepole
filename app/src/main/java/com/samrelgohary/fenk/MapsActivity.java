@@ -14,6 +14,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
 
+    String friendName,friendPhoto,friendId;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +26,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
 
         mapFragment.getMapAsync(this);
+
+        Bundle bundle = getIntent().getExtras();
+
+        friendId = bundle.getString("friendId");
+        friendName = bundle.getString("friendName");
+        friendPhoto = bundle.getString("friendPhoto");
     }
 
 
