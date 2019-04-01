@@ -10,6 +10,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.constraint.solver.widgets.Snapshot;
 import android.support.v4.app.FragmentActivity;
@@ -129,16 +130,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // Create a circular bitmap
                 bitmap = getCircularBitmap(bitmap);
 
+                //resize bitmap
+                bitmap = getResizedBitmap(bitmap,150,150);
+
                 // Add a border around circular bitmap
                 bitmap = addBorderToCircularBitmap(bitmap, 5, Color.WHITE);
 
                 // Add a shadow around circular bitmap
                 bitmap = addShadowToCircularBitmap(bitmap, 2, Color.LTGRAY);
 
-                //resize bitmap
-                bitmap = getResizedBitmap(bitmap,150,150);
 
-                mMarker.setIcon(BitmapDescriptorFactory.fromBitmap(bitmap));
+            mMarker.setIcon(BitmapDescriptorFactory.fromBitmap(bitmap));
 
 
         }
