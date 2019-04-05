@@ -15,8 +15,8 @@ public class CircleTransform implements Transformation {
     public Bitmap transform(Bitmap source) {
         int size = Math.min(source.getWidth(), source.getHeight());
 
-        int x = (source.getWidth() - size) / 2;
-        int y = (source.getHeight() - size) / 2;
+        int x = (source.getWidth() - size) / 4;
+        int y = (source.getHeight() - size) / 4;
 
         Bitmap squaredBitmap = Bitmap.createBitmap(source, x, y, size, size);
         if (squaredBitmap != source) {

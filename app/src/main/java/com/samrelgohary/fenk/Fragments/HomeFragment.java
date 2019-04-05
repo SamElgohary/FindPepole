@@ -111,12 +111,18 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
         CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(15).build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        try {
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("realTimeLocation");
+            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("realTimeLocation");
+            GeoFire geoFire = new GeoFire(ref);
+            geoFire.setLocation(userId,new GeoLocation(location.getLatitude(),location.getLongitude()));
 
-        GeoFire geoFire = new GeoFire(ref);
-        geoFire.setLocation(userId,new GeoLocation(location.getLatitude(),location.getLongitude()));
+        }catch (Exception e){
+
+        }
+
+
     }
 
 

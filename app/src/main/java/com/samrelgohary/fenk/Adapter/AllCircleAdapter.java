@@ -223,7 +223,6 @@ public class AllCircleAdapter extends ArrayAdapter<UserModel> implements ListAda
             e.printStackTrace();
         }
     }
-
     public void cancelAction(final ViewHolder viewHolder, final String id, final String friendId){
 
         Log.i("id","___"+id);
@@ -277,9 +276,5 @@ public class AllCircleAdapter extends ArrayAdapter<UserModel> implements ListAda
         circleModel.setId(getDefaults("socialId", getApplicationContext()));
         circleModel.setFriendId(friendId);
         ref.push().setValue(circleModel);
-//        Intent intent = new Intent(getContext(), AddToCircleActivity.class);
-//         mContext.startActivity(intent);
-//        ((Activity)mContext).finish();
-
     }
 }

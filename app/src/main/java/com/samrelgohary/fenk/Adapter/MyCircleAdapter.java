@@ -111,6 +111,7 @@ public class MyCircleAdapter extends ArrayAdapter<UserModel> implements ListAdap
                intent.putExtra("friendPhoto",userModel.getImg());
                intent.putExtra("friendId",userModel.getSocialId());
                mContext.startActivity(intent);
+
            }
        });
 
