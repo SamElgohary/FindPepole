@@ -1,13 +1,18 @@
 package com.samrelgohary.fenk.Fragments;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -85,6 +90,8 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
         });
 
 
+        statusCheck();
+
         return rootView;
     }
 
@@ -112,7 +119,6 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
         try {
-
             String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("realTimeLocation");
             GeoFire geoFire = new GeoFire(ref);
@@ -186,5 +192,41 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
     public void onLowMemory() {
         super.onLowMemory();
         mMapView.onLowMemory();
+    }
+
+
+    public void statusCheck() {
+
+        final LocationManager manager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            displayPromptForEnablingGPS(getActivity());
+
+        }
+
+    }
+
+    public static void displayPromptForEnablingGPS(final Activity activity)
+    {
+
+        final AlertDialog.Builder builder =  new AlertDialog.Builder(activity);
+        final String action = Settings.ACTION_LOCATION_SOURCE_SETTINGS;
+        final String message = "لن نتمكن من الوصول الي مكانك ولن يعمل التطبيق بكفأه في حالة اغلاق الـ GPS من فضلك شغله";
+
+        builder.setMessage(message)
+                .setPositiveButton("شغله",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface d, int id) {
+                                activity.startActivity(new Intent(action));
+                                d.dismiss();
+                            }
+                        })
+                .setNegativeButton("لا متشغلوش",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface d, int id) {
+                                d.cancel();
+                            }
+                        });
+        builder.create().show();
     }
 }

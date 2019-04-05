@@ -92,6 +92,66 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                if (resultUri == null){
+
+                    mUserImg.requestFocus();
+                    Toast.makeText(SignupActivity.this, "Enter Img Please", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (mFName.getText().toString().isEmpty()){
+                    mFName.requestFocus();
+                    mFName.setError(getResources().getString(R.string.enter_name_please));
+                    return;
+                }
+
+                if (mLtName.getText().toString().isEmpty()){
+                    mLtName.requestFocus();
+                    mLtName.setError(getResources().getString(R.string.enter_name_please));
+                    return;
+                }
+                if (mLtName.getText().toString().isEmpty()){
+                    mLtName.requestFocus();
+                    mLtName.setError(getResources().getString(R.string.enter_name_please));
+                    return;
+                }
+
+                if (mEmail.getText().toString().isEmpty()){
+                    mEmail.requestFocus();
+                    mEmail.setError(getResources().getString(R.string.enter_email_please));
+                    return;
+                }
+
+                if (mPassword.getText().toString().isEmpty()){
+                    mPassword.requestFocus();
+                    mPassword.setError(getResources().getString(R.string.enter_password_please));
+                    return;
+                }
+
+                if (mRePassword.getText().toString().isEmpty()){
+                    mRePassword.requestFocus();
+                    mRePassword.setError(getResources().getString(R.string.enter_re_password_please));
+                    return;
+                }
+
+                if (mRePassword.getText().toString().equals(mPassword.getText().toString())){
+                    mRePassword.requestFocus();
+                    mRePassword.setError(getResources().getString(R.string.passwords_not_match));
+                    return;
+                }
+
+                if (mBirthDate.getText().toString().isEmpty()){
+                    mBirthDate.requestFocus();
+                    mBirthDate.setError(getResources().getString(R.string.enter_birth_day_please));
+                    return;
+                }
+
+                if (mPhoneNumber.getText().toString().isEmpty()){
+                    mPhoneNumber.requestFocus();
+                    mPhoneNumber.setError(getResources().getString(R.string.enter_phone_please));
+                    return;
+                }
+
                 Log.d("email","__"+mEmail.getText().toString());
                 Log.d("mPassword","__"+mPassword.getText().toString());
                 signUpUser(mEmail.getText().toString(),mPassword.getText().toString());

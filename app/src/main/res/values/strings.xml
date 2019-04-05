@@ -19,7 +19,7 @@
     <string name="re_password">Re Password</string>
     <string name="birth_of_date">Birth of date</string>
     <string name="your_address">Address</string>
-    <string name="dd">DD</string>
+    <string name="dd">DD/MM/YY</string>
     <string name="mm">MM</string>
     <string name="yy">YY</string>
     <string name="country">Country</string>
@@ -40,5 +40,18 @@
     <string name="add_to_my_circle">Add To My Circle</string>
     <string name="already_added">"already added"</string>
     <string name="cancel_request">"Cancel Request"</string>
+    <string name="enter_name_please">Please Enter Your  Name</string>
+    <string name="enter_email_please">Please Enter Your  Email</string>
+    <string name="enter_phone_please">Please Enter Your  Phone</string>
+    <string name="enter_message_please">Please Enter Your  Message</string>
+    <string name="enter_password_please">Please Enter Your  Password</string>
+    <string name="enter_re_password_please">Please Enter Your  Re Password</string>
+    <string name="enter_birth_day_please">Please Enter Your  Birthday</string>
+
+    <string name="passwords_not_match">Passwords not match</string>
+
+    <string name="about_us">تم التطوير التطبيق على ايدى طلاب اكاديمية النيل للعلوم والتكنولوجيا كأحدي مشروعات التخرج للعام الدراسي 2018/2019
+</string>
+    <string name="contact_us">Contact us</string>
 
 </resources>

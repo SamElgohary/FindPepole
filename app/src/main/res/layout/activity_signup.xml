@@ -73,6 +73,7 @@
                         android:layout_height="@dimen/_30sdp"
                         android:background="@drawable/rounded_edittext"
                         android:paddingLeft="@dimen/_8sdp"
+                        android:inputType="text"
                         android:paddingRight="@dimen/_8sdp" />
 
 
@@ -97,6 +98,7 @@
                         android:id="@+id/l_name"
                         android:paddingRight="@dimen/_8sdp"
                         android:paddingLeft="@dimen/_8sdp"
+                        android:inputType="text"
                         android:background="@drawable/rounded_edittext"/>
 
 
@@ -132,6 +134,7 @@
                         android:layout_height="@dimen/_30sdp"
                         android:paddingRight="@dimen/_8sdp"
                         android:paddingLeft="@dimen/_8sdp"
+                        android:inputType="textEmailAddress"
                         android:background="@drawable/rounded_edittext"/>
 
 
@@ -169,6 +172,7 @@
                         android:layout_height="@dimen/_30sdp"
                         android:paddingRight="@dimen/_8sdp"
                         android:paddingLeft="@dimen/_8sdp"
+                        android:inputType="textPassword"
                         android:background="@drawable/rounded_edittext"/>
 
                 </LinearLayout>
@@ -205,6 +209,7 @@
                         android:layout_height="@dimen/_30sdp"
                         android:paddingRight="@dimen/_8sdp"
                         android:paddingLeft="@dimen/_8sdp"
+                        android:inputType="textPassword"
                         android:background="@drawable/rounded_edittext"/>
 
                 </LinearLayout>
@@ -372,6 +377,7 @@
                             android:layout_marginLeft="@dimen/_4sdp"
                             android:paddingRight="@dimen/_8sdp"
                             android:paddingLeft="@dimen/_8sdp"
+                            android:inputType="phone"
                             android:background="@drawable/rounded_edittext"
                             android:hint="@string/phone_number" />
 
