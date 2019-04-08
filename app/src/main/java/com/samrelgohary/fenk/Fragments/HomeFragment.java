@@ -6,23 +6,28 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.GeoQuery;
+import com.firebase.geofire.GeoQueryEventListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
@@ -37,11 +42,13 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.samrelgohary.fenk.R;
 
 import static android.content.Context.LOCATION_SERVICE;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  created by samRElGohary Mar 12, 2019
@@ -56,6 +63,8 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
     LocationRequest mLocationRequest;
 
     Context context;
+
+    LatLng pickupLocation;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -84,13 +93,11 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
                 }
                 buildGoogleApiClient();
                 googleMap.setMyLocationEnabled(true);
-
-
             }
         });
 
-
         statusCheck();
+
 
         return rootView;
     }
@@ -124,13 +131,14 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
             GeoFire geoFire = new GeoFire(ref);
             geoFire.setLocation(userId,new GeoLocation(location.getLatitude(),location.getLongitude()));
 
+            pickupLocation = new LatLng(mLastLocation.getLatitude(),mLastLocation.getLongitude());
+            getCloseFriend();
+
         }catch (Exception e){
 
         }
 
-
     }
-
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
@@ -228,5 +236,79 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
                             }
                         });
         builder.create().show();
+    }
+
+    public void mRequest(){
+
+
+        try {
+            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("myLocation");
+            GeoFire geoFire = new GeoFire(ref);
+            geoFire.setLocation(userId,new GeoLocation(mLastLocation.getLatitude(),mLastLocation.getLongitude()));
+
+        }catch (Exception e){
+
+        }
+            pickupLocation = new LatLng(mLastLocation.getLatitude(),mLastLocation.getLongitude());
+            googleMap.addMarker(new MarkerOptions().position(pickupLocation).title(getDefaults("fullName",getApplicationContext())));
+
+            getCloseFriend();
+
+    }
+
+    private int radius = 1;
+
+    private Boolean circleFound = false;
+    private String  circleFoundID;
+
+    public void getCloseFriend(){
+
+        DatabaseReference friendLocation = FirebaseDatabase.getInstance().getReference().child("realTimeLocation");
+        GeoFire geoFire = new GeoFire(friendLocation);
+
+        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(pickupLocation.latitude, pickupLocation.longitude), radius);
+        geoQuery.removeAllListeners();
+        geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
+            @Override
+            public void onKeyEntered(String key, GeoLocation location) {
+
+                if(!circleFound){
+                    circleFound = true;
+                    circleFoundID = key;
+                    Log.d("circleFoundID","___"+circleFoundID);
+                }
+            }
+
+            @Override
+            public void onKeyExited(String key) {
+
+            }
+
+            @Override
+            public void onKeyMoved(String key, GeoLocation location) {
+
+            }
+
+            @Override
+            public void onGeoQueryReady() {
+
+                if (!circleFound)
+                {
+                    radius++;
+                    getCloseFriend();
+                }
+            }
+
+            @Override
+            public void onGeoQueryError(DatabaseError error) {
+
+            }
+        });
+    }
+
+    public static String getDefaults(String key, Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString(key, null);
     }
 }
