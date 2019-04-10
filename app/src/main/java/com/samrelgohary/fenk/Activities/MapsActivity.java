@@ -80,7 +80,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    public static class PicassoMarker implements Target {
+      class PicassoMarker implements Target {
         Marker mMarker;
 
         public PicassoMarker(Marker marker) {

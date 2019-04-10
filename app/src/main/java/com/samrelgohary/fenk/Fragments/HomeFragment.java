@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -38,6 +40,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -54,6 +57,7 @@ import com.samrelgohary.fenk.CircleTransform;
 import com.samrelgohary.fenk.Model.UserModel;
 import com.samrelgohary.fenk.R;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import static android.content.Context.LOCATION_SERVICE;
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -306,7 +310,7 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
                         MarkerOptions opt = new MarkerOptions().position(friendLocation).title(name);
                         // Add the marker to the map
                         Marker m = googleMap.addMarker(opt);
-                        MapsActivity.PicassoMarker marker = new MapsActivity.PicassoMarker(m);
+                        PicassoMarker marker = new PicassoMarker(m);
                         Picasso.get().load(img).transform(new CircleTransform()).resize(120, 120).into(marker);
 
 
@@ -316,6 +320,45 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
                  }
             }
 
+
+            class PicassoMarker implements Target {
+                Marker mMarker;
+
+                public PicassoMarker(Marker marker) {
+                    mMarker = marker;
+                }
+
+                @Override
+                public int hashCode() {
+                    return mMarker.hashCode();
+                }
+
+                @Override
+                public boolean equals(Object o) {
+                    if (o instanceof PicassoMarker) {
+                        Marker marker = ((PicassoMarker) o).mMarker;
+                        return mMarker.equals(marker);
+                    } else {
+                        return false;
+                    }
+                }
+
+                @Override
+                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
+                    mMarker.setIcon(BitmapDescriptorFactory.fromBitmap(bitmap));
+                }
+
+                @Override
+                public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+                }
+
+                @Override
+                public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                }
+            }
 
 
             @Override
