@@ -80,10 +80,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    public class PicassoMarker implements Target {
+    public static class PicassoMarker implements Target {
         Marker mMarker;
 
-        PicassoMarker(Marker marker) {
+        public PicassoMarker(Marker marker) {
             mMarker = marker;
         }
 
@@ -141,9 +141,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         friendLocation = new LatLng(lat, lng);
                         Log.d("fCurrentLocation", "____" + String.valueOf(friendLocation));
 
-                        // Add a marker in Sydney and move the camera
-                      //  LatLng latLng = new LatLng(-34, 151);
-
 
                         Log.d("getFinallocation", "__"+String.valueOf(friendLocation));
 
@@ -151,13 +148,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         CameraPosition cameraPosition = new CameraPosition.Builder().target(friendLocation).zoom(15).build();
                         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
-                        MarkerOptions opt = new MarkerOptions()
-                                .position(friendLocation)
-                                .title(friendName);
-
+                        MarkerOptions opt = new MarkerOptions().position(friendLocation).title(friendName);
                         // Add the marker to the map
                         Marker m = mMap.addMarker(opt);
-
                         PicassoMarker marker = new PicassoMarker(m);
                         Picasso.get().load(friendPhoto).transform(new CircleTransform()).resize(120, 120).into(marker);
                     }

@@ -40,12 +40,20 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.samrelgohary.fenk.Activities.MapsActivity;
+import com.samrelgohary.fenk.CircleTransform;
+import com.samrelgohary.fenk.Model.UserModel;
 import com.samrelgohary.fenk.R;
+import com.squareup.picasso.Picasso;
 
 import static android.content.Context.LOCATION_SERVICE;
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -61,10 +69,6 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
     GoogleApiClient mGoogleApiClient;
     Location mLastLocation;
     LocationRequest mLocationRequest;
-
-    Context context;
-
-    LatLng pickupLocation;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -98,6 +102,7 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
 
         statusCheck();
 
+        getRequestsId(getDefaults("socialId",getApplicationContext()));
 
         return rootView;
     }
@@ -131,8 +136,6 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
             GeoFire geoFire = new GeoFire(ref);
             geoFire.setLocation(userId,new GeoLocation(location.getLatitude(),location.getLongitude()));
 
-            pickupLocation = new LatLng(mLastLocation.getLatitude(),mLastLocation.getLongitude());
-            getCloseFriend();
 
         }catch (Exception e){
 
@@ -238,77 +241,90 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
         builder.create().show();
     }
 
-    public void mRequest(){
-
-
-        try {
-            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("myLocation");
-            GeoFire geoFire = new GeoFire(ref);
-            geoFire.setLocation(userId,new GeoLocation(mLastLocation.getLatitude(),mLastLocation.getLongitude()));
-
-        }catch (Exception e){
-
-        }
-            pickupLocation = new LatLng(mLastLocation.getLatitude(),mLastLocation.getLongitude());
-            googleMap.addMarker(new MarkerOptions().position(pickupLocation).title(getDefaults("fullName",getApplicationContext())));
-
-            getCloseFriend();
-
-    }
-
-    private int radius = 1;
-
-    private Boolean circleFound = false;
-    private String  circleFoundID;
-
-    public void getCloseFriend(){
-
-        DatabaseReference friendLocation = FirebaseDatabase.getInstance().getReference().child("realTimeLocation");
-        GeoFire geoFire = new GeoFire(friendLocation);
-
-        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(pickupLocation.latitude, pickupLocation.longitude), radius);
-        geoQuery.removeAllListeners();
-        geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
-            @Override
-            public void onKeyEntered(String key, GeoLocation location) {
-
-                if(!circleFound){
-                    circleFound = true;
-                    circleFoundID = key;
-                    Log.d("circleFoundID","___"+circleFoundID);
-                }
-            }
-
-            @Override
-            public void onKeyExited(String key) {
-
-            }
-
-            @Override
-            public void onKeyMoved(String key, GeoLocation location) {
-
-            }
-
-            @Override
-            public void onGeoQueryReady() {
-
-                if (!circleFound)
-                {
-                    radius++;
-                    getCloseFriend();
-                }
-            }
-
-            @Override
-            public void onGeoQueryError(DatabaseError error) {
-
-            }
-        });
-    }
 
     public static String getDefaults(String key, Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getString(key, null);
+    }
+
+    public void getRequestsId(final String key) {
+
+        Query query ;
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        query = ref.child("myFriends");
+
+        try{query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+                for (DataSnapshot itemSnapShot : dataSnapshot.getChildren()) {
+
+
+                    if (itemSnapShot.child("id").getValue(String.class).equals(getDefaults("socialId",getApplicationContext()))) {
+
+                        getMyCircle(itemSnapShot.child("friendId").getValue(String.class));
+
+                        Log.d("getFriendId", "__" + itemSnapShot.child("friendId").getValue(String.class));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });} catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getMyCircle(final String id) {
+
+        Log.i("key","___"+id);
+
+        Query query ;
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        query = ref.child("user");
+
+        try{query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot itemSnapShot : dataSnapshot.getChildren()) {
+
+
+                    if (itemSnapShot.child("socialId").getValue(String.class).equals(id)) {
+
+
+                        String name =   itemSnapShot.child("fullName").getValue(String.class);
+                        String img  = itemSnapShot.child("img").getValue(String.class);
+                        String  id  = itemSnapShot.child("socialId").getValue(String.class);
+
+                        LatLng friendLocation = new LatLng(30.9730107, 31.1665126);
+                        MarkerOptions opt = new MarkerOptions().position(friendLocation).title(name);
+                        // Add the marker to the map
+                        Marker m = googleMap.addMarker(opt);
+                        MapsActivity.PicassoMarker marker = new MapsActivity.PicassoMarker(m);
+                        Picasso.get().load(img).transform(new CircleTransform()).resize(120, 120).into(marker);
+
+
+                        Log.d("getFullName", "__" + itemSnapShot.child("fullName").getValue(String.class));
+
+                     }
+                 }
+            }
+
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });} catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }
