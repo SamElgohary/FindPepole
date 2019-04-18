@@ -134,7 +134,7 @@ public class SignupActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (mRePassword.getText().toString().equals(mPassword.getText().toString())){
+                if (!mRePassword.getText().toString().equals(mPassword.getText().toString())){
                     mRePassword.requestFocus();
                     mRePassword.setError(getResources().getString(R.string.passwords_not_match));
                     return;

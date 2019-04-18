@@ -74,6 +74,8 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
     Location mLastLocation;
     LocationRequest mLocationRequest;
 
+    Boolean firstTime = true;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
@@ -127,12 +129,14 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
     public void onLocationChanged(Location location) {
         mLastLocation = location;
 
-        LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
-        //googleMap.addMarker(new MarkerOptions().position(latLng).title("Marker Title").snippet("Marker Description"));
 
-        // For zooming automatically to the location of the marker
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(15).build();
-        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        if(firstTime) {
+            // For zooming automatically to the location of the marker
+            CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(15).build();
+            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            firstTime = false;
+        }
 
         try {
             String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -245,6 +249,45 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
         builder.create().show();
     }
 
+    class PicassoMarker implements Target {
+        Marker mMarker;
+
+        public PicassoMarker(Marker marker) {
+            mMarker = marker;
+        }
+
+        @Override
+        public int hashCode() {
+            return mMarker.hashCode();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o instanceof PicassoMarker) {
+                Marker marker = ((PicassoMarker) o).mMarker;
+                return mMarker.equals(marker);
+            } else {
+                return false;
+            }
+        }
+
+        @Override
+        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
+            mMarker.setIcon(BitmapDescriptorFactory.fromBitmap(bitmap));
+        }
+
+        @Override
+        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+        }
+
+        @Override
+        public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+        }
+    }
+
 
     public static String getDefaults(String key, Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -301,65 +344,16 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
 
                     if (itemSnapShot.child("socialId").getValue(String.class).equals(id)) {
 
-
                         String name =   itemSnapShot.child("fullName").getValue(String.class);
                         String img  = itemSnapShot.child("img").getValue(String.class);
                         String  id  = itemSnapShot.child("socialId").getValue(String.class);
 
-                        LatLng friendLocation = new LatLng(30.9730107, 31.1665126);
-                        MarkerOptions opt = new MarkerOptions().position(friendLocation).title(name);
-                        // Add the marker to the map
-                        Marker m = googleMap.addMarker(opt);
-                        PicassoMarker marker = new PicassoMarker(m);
-                        Picasso.get().load(img).transform(new CircleTransform()).resize(120, 120).into(marker);
-
+                        getFriendLocation(name,img,id);
 
                         Log.d("getFullName", "__" + itemSnapShot.child("fullName").getValue(String.class));
-
                      }
                  }
             }
-
-
-            class PicassoMarker implements Target {
-                Marker mMarker;
-
-                public PicassoMarker(Marker marker) {
-                    mMarker = marker;
-                }
-
-                @Override
-                public int hashCode() {
-                    return mMarker.hashCode();
-                }
-
-                @Override
-                public boolean equals(Object o) {
-                    if (o instanceof PicassoMarker) {
-                        Marker marker = ((PicassoMarker) o).mMarker;
-                        return mMarker.equals(marker);
-                    } else {
-                        return false;
-                    }
-                }
-
-                @Override
-                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-
-                    mMarker.setIcon(BitmapDescriptorFactory.fromBitmap(bitmap));
-                }
-
-                @Override
-                public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-
-                }
-
-                @Override
-                public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-                }
-            }
-
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -370,4 +364,47 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
         }
 
     }
+
+    public void getFriendLocation(final String name, final String img, String friendId){
+
+        Query query;
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+
+        query = ref.child("realTimeLocation").child(friendId);
+        try{query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot itemSnapShot : dataSnapshot.getChildren()) {
+
+                    Double lat = itemSnapShot.child("0").getValue(double.class);
+                    Double lng = itemSnapShot.child("1").getValue(double.class);
+
+                    if (lat != null && lng != null) {
+                        Log.d("getUserLat", String.valueOf(lat));
+                        Log.d("getUserLng", String.valueOf(lng));
+
+                        LatLng friendLocation = new LatLng(lat, lng);
+                        MarkerOptions opt = new MarkerOptions().position(friendLocation).title(name);
+                        // Add the marker to the map
+                        Marker m = googleMap.addMarker(opt);
+                        PicassoMarker marker = new PicassoMarker(m);
+                        Picasso.get().load(img).transform(new CircleTransform()).resize(120, 120).into(marker);
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });} catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
 }
